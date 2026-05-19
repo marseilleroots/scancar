@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0a0f1c">
+    <title>ScanCar — Scannez une plaque, obtenez le rapport véhicule complet</title>
+    <meta name="description" content="Scannez n'importe quelle plaque d'immatriculation française et obtenez un rapport véhicule complet : caractéristiques techniques, valeur marché, écologie (Crit'Air), fiabilité. 100% gratuit. Avant d'acheter une voiture d'occasion, ScanCar.">
+    <meta name="keywords" content="scan plaque immatriculation, rapport véhicule gratuit, vérifier voiture occasion, cote argus, Crit'Air, historique véhicule, contrôle technique, fiabilité auto">
+    <meta name="author" content="ScanCar">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://scancar.fr/">
+
+    <!-- Open Graph (Facebook, LinkedIn, WhatsApp) -->
+    <meta property="og:site_name" content="ScanCar">
+    <meta property="og:title" content="ScanCar — Avant d'acheter une voiture, scannez sa plaque">
+    <meta property="og:description" content="Rapport véhicule complet à partir d'une plaque d'immatriculation : technique, marché, écologie, fiabilité. 100% gratuit.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://scancar.fr/">
+    <meta property="og:image" content="https://scancar.fr/assets/icon-512.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:locale" content="fr_FR">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ScanCar — Avant d'acheter, scannez la plaque">
+    <meta name="twitter:description" content="Rapport véhicule complet à partir d'une plaque française : technique, marché, écologie, fiabilité. Gratuit.">
+    <meta name="twitter:image" content="https://scancar.fr/assets/icon-512.png">
+
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "ScanCar",
+      "description": "Application web qui permet de scanner une plaque d'immatriculation française et d'obtenir un rapport véhicule complet : caractéristiques, valeur marché, écologie, fiabilité.",
+      "url": "https://scancar.fr/",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Web (PWA)",
+      "browserRequirements": "Requires JavaScript. Compatible with Chrome, Firefox, Safari, Edge.",
+      "inLanguage": "fr-FR",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      },
+      "creator": {
+        "@type": "Organization",
+        "name": "ScanCar",
+        "url": "https://scancar.fr/"
+      }
+    }
+    </script>
+    <meta name="google-adsense-account" content="ca-pub-4539749437157193">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="apple-touch-icon" href="assets/icon-192.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/legal.css">
+    <!-- Google Consent Mode v2 — refusé par défaut avant consentement (RGPD) -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('consent', 'default', {
+            ad_storage: 'denied',
+            analytics_storage: 'denied',
+            ad_user_data: 'denied',
+            ad_personalization: 'denied',
+            wait_for_update: 500
+        });
+    </script>
+
+    <!-- Google Analytics 4 — respecte automatiquement le Consent Mode -->
+    <script src="js/config.js"></script>
+    <script>
+        if (window.SCANCAR_CONFIG && window.SCANCAR_CONFIG.GA4_ID) {
+            const ga4 = window.SCANCAR_CONFIG.GA4_ID;
+            const s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ga4;
+            document.head.appendChild(s);
+            gtag('js', new Date());
+            gtag('config', ga4, { anonymize_ip: true, allow_google_signals: false });
+        }
+    </script>
+    <!-- AdSense chargé dynamiquement après consentement (voir app.js) -->
+</head>
+<body>
+
+    <!-- SPLASH SCREEN -->
+    <div id="splash" class="splash">
+        <div class="splash-content">
+            <div class="splash-logo">
+                <svg class="logo-icon" viewBox="0 0 60 60" width="80" height="80">
+                    <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#0099ff;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <rect x="4" y="18" width="52" height="24" rx="5" fill="none" stroke="url(#grad1)" stroke-width="2.5"/>
+                    <circle cx="14" cy="30" r="4" fill="url(#grad1)" opacity="0.3"/>
+                    <circle cx="46" cy="30" r="4" fill="url(#grad1)" opacity="0.3"/>
+                    <rect x="22" y="24" width="16" height="12" rx="2" fill="none" stroke="url(#grad1)" stroke-width="1.5"/>
+                    <line x1="30" y1="20" x2="30" y2="24" stroke="url(#grad1)" stroke-width="1.5"/>
+                    <line x1="30" y1="36" x2="30" y2="40" stroke="url(#grad1)" stroke-width="1.5"/>
+                    <path d="M26 28 L29 31 L35 25" stroke="url(#grad1)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h1 class="splash-title">Scan<span class="highlight">Car</span></h1>
+            <p class="splash-tagline">Avant d'acheter, ScanCar!</p>
+            <div class="splash-loader">
+                <div class="loader-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="app" class="app hidden">
+
+        <!-- HEADER -->
+        <header class="header">
+            <div class="header-left">
+                <svg class="header-logo" viewBox="0 0 60 60" width="32" height="32">
+                    <rect x="4" y="18" width="52" height="24" rx="5" fill="none" stroke="url(#grad1)" stroke-width="2.5"/>
+                    <path d="M26 28 L29 31 L35 25" stroke="url(#grad1)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="header-title">Scan<span class="highlight">Car</span></span>
+            </div>
+            <div class="header-right">
+                <button class="btn-icon" id="historyBtn" aria-label="Historique">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </button>
+                <button class="btn-icon" id="menuBtn" aria-label="Menu">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- SCAN VIEW -->
+        <div id="scanView" class="view scan-view active">
+            <div class="camera-container">
+                <video id="camera" autoplay playsinline muted></video>
+                <div class="scan-overlay">
+                    <div class="scan-frame">
+                        <div class="corner tl"></div>
+                        <div class="corner tr"></div>
+                        <div class="corner bl"></div>
+                        <div class="corner br"></div>
+                        <div class="scan-line"></div>
+                        <div class="plate-guide">
+                            <svg class="plate-icon" width="24" height="16" viewBox="0 0 24 16">
+                                <rect x="0.5" y="0.5" width="23" height="15" rx="2" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1"/>
+                                <rect x="1" y="1" width="3" height="14" rx="1" fill="rgba(0,100,255,0.4)"/>
+                            </svg>
+                            <span>Placez la plaque dans le cadre</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="camera-controls">
+                    <button class="btn-flash" id="flashBtn" aria-label="Flash">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    </button>
+                    <button class="btn-capture" id="captureBtn" aria-label="Scanner">
+                        <div class="capture-ring">
+                            <div class="capture-inner">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                            </div>
+                        </div>
+                    </button>
+                    <button class="btn-gallery" id="galleryBtn" aria-label="Galerie">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- MANUAL INPUT -->
+            <div class="manual-input">
+                <div class="input-divider">
+                    <span>ou entrez la plaque manuellement</span>
+                </div>
+                <div class="plate-input-container">
+                    <div class="plate-input-wrapper">
+                        <div class="plate-country">
+                            <select id="countrySelect">
+                                <option value="FR">🇫🇷</option>
+                                <option value="DE">🇩🇪</option>
+                                <option value="ES">🇪🇸</option>
+                                <option value="IT">🇮🇹</option>
+                                <option value="BE">🇧🇪</option>
+                                <option value="NL">🇳🇱</option>
+                                <option value="PT">🇵🇹</option>
+                                <option value="GB">🇬🇧</option>
+                                <option value="CH">🇨🇭</option>
+                                <option value="PL">🇵🇱</option>
+                                <option value="AT">🇦🇹</option>
+                                <option value="SE">🇸🇪</option>
+                                <option value="NO">🇳🇴</option>
+                                <option value="DK">🇩🇰</option>
+                                <option value="FI">🇫🇮</option>
+                                <option value="IE">🇮🇪</option>
+                                <option value="GR">🇬🇷</option>
+                                <option value="HU">🇭🇺</option>
+                                <option value="CZ">🇨🇿</option>
+                                <option value="HR">🇭🇷</option>
+                                <option value="SK">🇸🇰</option>
+                                <option value="SI">🇸🇮</option>
+                                <option value="EE">🇪🇪</option>
+                                <option value="LV">🇱🇻</option>
+                                <option value="LT">🇱🇹</option>
+                                <option value="IS">🇮🇸</option>
+                                <option value="MT">🇲🇹</option>
+                                <option value="UA">🇺🇦</option>
+                            </select>
+                        </div>
+                        <input type="text" id="plateInput" class="plate-input" placeholder="AB-123-CD" autocapitalize="characters" autocomplete="off" spellcheck="false">
+                        <button class="btn-search" id="searchBtn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EUROPE BADGE -->
+            <div class="europe-badge">
+                <span>🇪🇺 28 pays européens couverts</span>
+            </div>
+        </div>
+
+        <!-- LOADING VIEW -->
+        <div id="loadingView" class="view loading-view">
+            <div class="loading-content">
+                <div class="loading-plate">
+                    <span id="loadingPlateText">AB-123-CD</span>
+                </div>
+                <div class="loading-spinner">
+                    <div class="spinner-ring"></div>
+                    <svg class="spinner-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                </div>
+                <p class="loading-text" id="loadingText">Analyse de la plaque...</p>
+                <div class="loading-steps">
+                    <div class="step active" id="step1">
+                        <div class="step-dot"></div>
+                        <span>Lecture de la plaque</span>
+                    </div>
+                    <div class="step" id="step2">
+                        <div class="step-dot"></div>
+                        <span>Interrogation des bases</span>
+                    </div>
+                    <div class="step" id="step3">
+                        <div class="step-dot"></div>
+                        <span>Analyse du véhicule</span>
+                    </div>
+                    <div class="step" id="step4">
+                        <div class="step-dot"></div>
+                        <span>Calcul du score</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULT VIEW -->
+        <div id="resultView" class="view result-view">
+            <div class="result-header">
+                <button class="btn-back" id="backBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                    Nouveau scan
+                </button>
+                <button class="btn-share" id="shareBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                </button>
+            </div>
+
+            <!-- VEHICLE HERO -->
+            <div class="vehicle-hero">
+                <div class="vehicle-image-container">
+                    <div class="vehicle-image" id="vehicleImage">
+                        <svg width="120" height="60" viewBox="0 0 120 60" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5">
+                            <path d="M20 45 L25 25 L45 15 L75 15 L95 25 L100 45" stroke-linecap="round" stroke-linejoin="round"/>
+                            <ellipse cx="35" cy="47" rx="8" ry="8"/>
+                            <ellipse cx="85" cy="47" rx="8" ry="8"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="vehicle-main-info">
+                    <div class="vehicle-plate-badge" id="resultPlate">AB-123-CD</div>
+                    <h2 class="vehicle-name" id="vehicleName">Peugeot 308</h2>
+                    <p class="vehicle-variant" id="vehicleVariant">1.5 BlueHDi 130 GT Line • 2021</p>
+                </div>
+                <div class="score-container">
+                    <div class="score-circle" id="scoreCircle">
+                        <svg viewBox="0 0 120 120">
+                            <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="8"/>
+                            <circle cx="60" cy="60" r="52" fill="none" stroke="url(#scoreGrad)" stroke-width="8" stroke-linecap="round" stroke-dasharray="327" stroke-dashoffset="327" transform="rotate(-90 60 60)" id="scoreArc"/>
+                            <defs>
+                                <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#00d4ff"/>
+                                    <stop offset="100%" style="stop-color:#00ff88"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <div class="score-value">
+                            <span class="score-number" id="scoreNumber">78</span>
+                            <span class="score-max">/100</span>
+                        </div>
+                    </div>
+                    <p class="score-label" id="scoreLabel">Bon achat</p>
+                </div>
+            </div>
+
+            <!-- RESULT SECTIONS -->
+            <div class="result-sections">
+
+                <!-- IDENTITÉ -->
+                <div class="section">
+                    <div class="section-header" onclick="toggleSection(this)">
+                        <div class="section-title-group">
+                            <div class="section-icon blue">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            </div>
+                            <h3>Identité du véhicule</h3>
+                        </div>
+                        <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                    <div class="section-content open">
+                        <div class="info-grid">
+                            <div class="info-item"><span class="info-label">Marque</span><span class="info-value" id="rMarque">Peugeot</span></div>
+                            <div class="info-item"><span class="info-label">Modèle</span><span class="info-value" id="rModele">308</span></div>
+                            <div class="info-item"><span class="info-label">Version</span><span class="info-value" id="rVersion">GT Line</span></div>
+                            <div class="info-item"><span class="info-label">Année</span><span class="info-value" id="rAnnee">2021</span></div>
+                            <div class="info-item"><span class="info-label">Mise en circulation</span><span class="info-value" id="rMec">15/03/2021</span></div>
+                            <div class="info-item"><span class="info-label">Âge</span><span class="info-value" id="rAge">5 ans et 2 mois</span></div>
+                            <div class="info-item"><span class="info-label">Couleur</span><span class="info-value" id="rCouleur">Gris Artense</span></div>
+                            <div class="info-item"><span class="info-label">Pays de fabrication</span><span class="info-value" id="rPays">🇫🇷 France (Sochaux)</span></div>
+                            <div class="info-item"><span class="info-label">VIN</span><span class="info-value mono" id="rVin">VF3LCYHZ•••••••</span></div>
+                            <div class="info-item"><span class="info-label">Nb. propriétaires</span><span class="info-value" id="rProprio">2</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TECHNIQUE -->
+                <div class="section">
+                    <div class="section-header" onclick="toggleSection(this)">
+                        <div class="section-title-group">
+                            <div class="section-icon purple">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+                            </div>
+                            <h3>Caractéristiques techniques</h3>
+                        </div>
+                        <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                    <div class="section-content">
+                        <div class="info-grid">
+                            <div class="info-item"><span class="info-label">Énergie</span><span class="info-value" id="rEnergie">Diesel (BlueHDi)</span></div>
+                            <div class="info-item"><span class="info-label">Cylindrée</span><span class="info-value" id="rCylindree">1 499 cm³</span></div>
+                            <div class="info-item"><span class="info-label">Puissance</span><span class="info-value" id="rPuissance">130 ch (96 kW)</span></div>
+                            <div class="info-item"><span class="info-label">Puissance fiscale</span><span class="info-value" id="rCv">8 CV</span></div>
+                            <div class="info-item"><span class="info-label">Boîte de vitesses</span><span class="info-value" id="rBoite">Automatique (EAT8)</span></div>
+                            <div class="info-item"><span class="info-label">Nb. cylindres</span><span class="info-value" id="rCylindres">4</span></div>
+                            <div class="info-item"><span class="info-label">Nb. places</span><span class="info-value" id="rPlaces">5</span></div>
+                            <div class="info-item"><span class="info-label">Nb. portes</span><span class="info-value" id="rPortes">5</span></div>
+                            <div class="info-item"><span class="info-label">Dimensions</span><span class="info-value" id="rDimensions">4,37 × 1,81 × 1,46 m</span></div>
+                            <div class="info-item"><span class="info-label">Poids à vide</span><span class="info-value" id="rPoids">1 300 kg</span></div>
+                            <div class="info-item"><span class="info-label">PTAC</span><span class="info-value" id="rPtac">1 820 kg</span></div>
+                            <div class="info-item"><span class="info-label">Compatible E85</span><span class="info-value green" id="rE85">✓ Oui (avec boîtier)</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RAPPORT COMPLET (VERROUILLÉ) -->
+                <div class="section" id="fullReportSection">
+                    <div class="section-header locked-header" id="unlockReportBtn">
+                        <div class="section-title-group">
+                            <div class="section-icon gold">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                            </div>
+                            <h3>Rapport Complet</h3>
+                            <span class="premium-badge">GRATUIT — 30s</span>
+                        </div>
+                        <svg class="chevron lock-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                    </div>
+                    <!-- Teaser (visible avant déverrouillage) -->
+                    <div class="section-content open" id="reportTeaser">
+                        <div class="report-locked-preview">
+                            <div class="locked-items">
+                                <div class="locked-item"><span class="locked-dot"></span>Historique des accidents</div>
+                                <div class="locked-item"><span class="locked-dot"></span>Véhicule volé ou non</div>
+                                <div class="locked-item"><span class="locked-dot"></span>Fraude kilométrique</div>
+                                <div class="locked-item"><span class="locked-dot"></span>Contrôle technique détaillé</div>
+                                <div class="locked-item"><span class="locked-dot"></span>Certificat de non-gage</div>
+                                <div class="locked-item"><span class="locked-dot"></span>Historique des propriétaires</div>
+                                <div class="locked-item"><span class="locked-dot"></span>Import / Export</div>
+                                <div class="locked-item"><span class="locked-dot"></span>Statut VEI / VGA (épave)</div>
+                            </div>
+                            <button class="unlock-btn" id="watchAdBtn">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                Débloquer le rapport (30s)
+                            </button>
+                            <p class="unlock-hint">100% gratuit</p>
+                        </div>
+                    </div>
+                    <!-- Contenu complet (masqué avant déverrouillage) -->
+                    <div class="section-content" id="reportFull" style="display:none;">
+                        <!-- Rapport CarVertical — chargé dynamiquement -->
+                        <div id="cvReportContainer"></div>
+                        <h4 class="subsection-title">Contrôle technique & Historique officiel</h4>
+
+                        <!-- Étape 1 : Le vendeur génère son lien -->
+                        <div class="histovec-step">
+                            <div class="histovec-step-num">1</div>
+                            <div class="histovec-step-text">
+                                <span class="histovec-step-title">Demandez le rapport au vendeur</span>
+                                <span class="histovec-step-desc">Le vendeur génère gratuitement son rapport officiel sur Histovec (CT, sinistres, km…) et vous envoie le lien.</span>
+                            </div>
+                            <a id="histovecLink" href="https://histovec.interieur.gouv.fr/histovec/home" target="_blank" rel="noopener" class="histovec-btn-sm">Histovec.fr →</a>
+                        </div>
+
+                        <!-- Étape 2 : L'acheteur colle le lien -->
+                        <div class="histovec-step">
+                            <div class="histovec-step-num">2</div>
+                            <div class="histovec-step-text">
+                                <span class="histovec-step-title">Collez le lien partageable ici</span>
+                                <span class="histovec-step-desc">Ouvre le rapport complet officiel directement — CT, accidents, propriétaires, gage.</span>
+                            </div>
+                        </div>
+                        <div class="histovec-paste-area">
+                            <input type="url" id="histovecPasteInput" class="histovec-input" placeholder="https://histovec.interieur.gouv.fr/histovec/rapport-acheteur?key=…" autocomplete="off" />
+                            <button id="histovecOpenBtn" class="histovec-open-btn" disabled>Voir le rapport →</button>
+                        </div>
+                        <p id="histovecError" class="histovec-error hidden">Lien invalide — vérifiez l'URL Histovec.</p>
+                    </div>
+                </div>
+
+                <!-- Partner link: LesFurets -->
+                <a class="ad-banner-inline" href="https://www.lesfurets.com/assurance-auto" target="_blank" rel="noopener sponsored">
+                    <span class="ad-label">Partenaire</span>
+                    <div class="ad-content-inline">
+                        <div class="ad-sponsor">LesFurets.com</div>
+                        <span>Comparateur d'assurance auto</span>
+                        <span class="ad-cta">Comparer →</span>
+                    </div>
+                </a>
+
+                <!-- ECOLOGIE & RESTRICTIONS -->
+                <div class="section">
+                    <div class="section-header" onclick="toggleSection(this)">
+                        <div class="section-title-group">
+                            <div class="section-icon teal">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 22c1.25-1.25 3-3 4.5-3 3 0 3 3 6 3s3-3 6-3c1.5 0 3.25 1.75 4.5 3"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.5 5"/><path d="M22 12c0-1.8-.5-3.5-1.5-5"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                            </div>
+                            <h3>Écologie & Restrictions</h3>
+                        </div>
+                        <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                    <div class="section-content">
+                        <div class="critair-badge critair-2">
+                            <span class="critair-number">2</span>
+                            <span class="critair-label">Crit'Air</span>
+                        </div>
+                        <div class="info-grid">
+                            <div class="info-item"><span class="info-label">Émissions CO2</span><span class="info-value" id="rCo2">98 g/km</span></div>
+                            <div class="info-item"><span class="info-label">Norme Euro</span><span class="info-value" id="rEuro">Euro 6d-TEMP</span></div>
+                            <div class="info-item"><span class="info-label">Malus écologique</span><span class="info-value green" id="rMalus">0€ (exempt)</span></div>
+                            <div class="info-item"><span class="info-label">ZFE Paris</span><span class="info-value green" id="rZfeParis">✓ Autorisé</span></div>
+                            <div class="info-item"><span class="info-label">ZFE Lyon</span><span class="info-value green" id="rZfeLyon">✓ Autorisé</span></div>
+                            <div class="info-item"><span class="info-label">Restriction prévue</span><span class="info-value orange-text" id="rRestriction">Interdit à Paris dès 2028</span></div>
+                        </div>
+                        <div class="alert-card warning">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                            <span>Ce véhicule sera interdit en ZFE Paris à partir de 2028. Pensez-y si vous comptez le garder longtemps.</span>
+                        </div>
+                        <div class="affiliate-card">
+                            <div class="affiliate-icon">⛽</div>
+                            <div class="affiliate-text">
+                                <span class="affiliate-title">Passez au bioéthanol E85</span>
+                                <span class="affiliate-desc">Boîtier homologué dès 699€ — Économisez 50% sur le carburant</span>
+                            </div>
+                            <span class="affiliate-arrow">→</span>
+                        </div>
+                        <div class="affiliate-card">
+                            <div class="affiliate-icon">🔌</div>
+                            <div class="affiliate-text">
+                                <span class="affiliate-title">Passez à l'électrique ?</span>
+                                <span class="affiliate-desc">Bonus écologique jusqu'à 7 000€ — Aramis Auto</span>
+                            </div>
+                            <span class="affiliate-arrow">→</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VALEUR MARCHÉ -->
+                <div class="section">
+                    <div class="section-header" onclick="toggleSection(this)">
+                        <div class="section-title-group">
+                            <div class="section-icon gold">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                            </div>
+                            <h3>Valeur & Marché</h3>
+                        </div>
+                        <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                    <div class="section-content">
+                        <div class="price-display">
+                            <span class="price-label">Estimation de valeur</span>
+                            <span class="price-range" id="rPrix">14 500€ — 17 200€</span>
+                            <span class="price-source">Basé sur Argus + annonces en ligne</span>
+                        </div>
+                        <div class="info-grid">
+                            <div class="info-item"><span class="info-label">Cote Argus</span><span class="info-value" id="rArgus">15 800€</span></div>
+                            <div class="info-item"><span class="info-label">Prix moyen LeBonCoin</span><span class="info-value" id="rLbc">16 200€</span></div>
+                            <div class="info-item"><span class="info-label">Prix moyen La Centrale</span><span class="info-value" id="rCentrale">16 900€</span></div>
+                            <div class="info-item"><span class="info-label">Tendance prix (3 mois)</span><span class="info-value red-text" id="rTendance">↓ -4.2%</span></div>
+                            <div class="info-item"><span class="info-label">Décote annuelle prévue</span><span class="info-value" id="rDecote">~12% / an</span></div>
+                            <div class="info-item"><span class="info-label">Annonces similaires</span><span class="info-value" id="rAnnonces">347 en ligne</span></div>
+                            <div class="info-item"><span class="info-label">Temps moyen de vente</span><span class="info-value" id="rTempsVente">18 jours</span></div>
+                            <div class="info-item"><span class="info-label">Demande</span><span class="info-value green" id="rDemande">🔥 Forte</span></div>
+                        </div>
+                        <div class="affiliate-card">
+                            <div class="affiliate-icon">🔔</div>
+                            <div class="affiliate-text">
+                                <span class="affiliate-title">Alerte prix</span>
+                                <span class="affiliate-desc">Recevez une alerte si ce modèle passe sous 14 000€</span>
+                            </div>
+                            <span class="affiliate-arrow">→</span>
+                        </div>
+                        <div class="affiliate-card">
+                            <div class="affiliate-icon">💰</div>
+                            <div class="affiliate-text">
+                                <span class="affiliate-title">Vendez votre véhicule au meilleur prix</span>
+                                <span class="affiliate-desc">Estimation gratuite en 2 min — Carizy / La Centrale</span>
+                            </div>
+                            <span class="affiliate-arrow">→</span>
+                        </div>
+                        <div class="affiliate-card">
+                            <div class="affiliate-icon">🚗</div>
+                            <div class="affiliate-text">
+                                <span class="affiliate-title">Trouvez ce modèle au meilleur prix</span>
+                                <span class="affiliate-desc">347 annonces vérifiées — Aramis Auto</span>
+                            </div>
+                            <span class="affiliate-arrow">→</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COÛTS -->
+                <div class="section">
+                    <div class="section-header" onclick="toggleSection(this)">
+                        <div class="section-title-group">
+                            <div class="section-icon red">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                            </div>
+                            <h3>Coûts estimés</h3>
+                        </div>
+                        <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                    <div class="section-content">
+                        <div class="info-grid">
+                            <div class="info-item"><span class="info-label">Carte grise (75)</span><span class="info-value" id="rCartegrise">~368€</span></div>
+                            <div class="info-item"><span class="info-label">Assurance (moy.)</span><span class="info-value" id="rAssurance">~52€ / mois</span></div>
+                            <div class="info-item"><span class="info-label">Carburant annuel</span><span class="info-value" id="rCarburant">~1 250€ / an</span></div>
+                            <div class="info-item"><span class="info-label">Entretien annuel</span><span class="info-value" id="rEntretien">~650€ / an</span></div>
+                            <div class="info-item"><span class="info-label">Pneus (lot de 4)</span><span class="info-value" id="rPneus">~320€</span></div>
+                            <div class="info-item"><span class="info-label">Coût total annuel</span><span class="info-value bold" id="rCoutTotal">~3 200€ / an</span></div>
+                        </div>
+                        <div class="affiliate-card">
+                            <div class="affiliate-icon">🛡️</div>
+                            <div class="affiliate-text">
+                                <span class="affiliate-title">Comparez +40 assureurs</span>
+                                <span class="affiliate-desc">Économisez jusqu'à 350€/an — LesFurets.com</span>
+                            </div>
+                            <span class="affiliate-arrow">→</span>
+                        </div>
+                        <div class="affiliate-card">
+                            <div class="affiliate-icon">🦁</div>
+                            <div class="affiliate-text">
+                                <span class="affiliate-title">Devis assurance en 3 min</span>
+                                <span class="affiliate-desc">Comparez gratuitement — LeLynx.fr</span>
+                            </div>
+                            <span class="affiliate-arrow">→</span>
+                        </div>
+                        <div class="affiliate-card">
+                            <div class="affiliate-icon">📋</div>
+                            <div class="affiliate-text">
+                                <span class="affiliate-title">Carte grise en ligne</span>
+                                <span class="affiliate-desc">Recevez-la en 24h — Eplaque.fr</span>
+                            </div>
+                            <span class="affiliate-arrow">→</span>
+                        </div>
+                        <div class="affiliate-card">
+                            <div class="affiliate-icon">🔩</div>
+                            <div class="affiliate-text">
+                                <span class="affiliate-title">Pièces auto pas cher</span>
+                                <span class="affiliate-desc">Jusqu'à -50% vs concessionnaire — Oscaro</span>
+                            </div>
+                            <span class="affiliate-arrow">→</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Partner link: Vroomly -->
+                <a class="ad-banner-inline" href="https://www.vroomly.com/" target="_blank" rel="noopener sponsored">
+                    <span class="ad-label">Partenaire</span>
+                    <div class="ad-content-inline">
+                        <div class="ad-sponsor">Vroomly.com</div>
+                        <span>Trouvez un garage près de chez vous</span>
+                        <span class="ad-cta">Voir →</span>
+                    </div>
+                </a>
+
+                <!-- FIABILITÉ -->
+                <div class="section">
+                    <div class="section-header" onclick="toggleSection(this)">
+                        <div class="section-title-group">
+                            <div class="section-icon cyan">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            </div>
+                            <h3>Fiabilité & Points clés</h3>
+                        </div>
+                        <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                    <div class="section-content">
+                        <div class="rating-bars">
+                            <div class="rating-item">
+                                <span class="rating-label">Fiabilité moteur</span>
+                                <div class="rating-bar"><div class="rating-fill" style="width:90%"></div></div>
+                                <span class="rating-score">4.5/5</span>
+                            </div>
+                            <div class="rating-item">
+                                <span class="rating-label">Fiabilité boîte</span>
+                                <div class="rating-bar"><div class="rating-fill" style="width:76%"></div></div>
+                                <span class="rating-score">3.8/5</span>
+                            </div>
+                            <div class="rating-item">
+                                <span class="rating-label">Électronique</span>
+                                <div class="rating-bar"><div class="rating-fill" style="width:66%"></div></div>
+                                <span class="rating-score">3.3/5</span>
+                            </div>
+                            <div class="rating-item">
+                                <span class="rating-label">Coût d'entretien</span>
+                                <div class="rating-bar"><div class="rating-fill" style="width:80%"></div></div>
+                                <span class="rating-score">4.0/5</span>
+                            </div>
+                            <div class="rating-item">
+                                <span class="rating-label">Consommation</span>
+                                <div class="rating-bar"><div class="rating-fill" style="width:86%"></div></div>
+                                <span class="rating-score">4.3/5</span>
+                            </div>
+                        </div>
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h4>✅ Points forts</h4>
+                                <ul>
+                                    <li>Consommation maîtrisée (4.2L/100km)</li>
+                                    <li>Confort de conduite</li>
+                                    <li>i-Cockpit digital dernière génération</li>
+                                    <li>Bonne valeur de revente</li>
+                                </ul>
+                            </div>
+                            <div class="cons">
+                                <h4>⚠️ Points faibles</h4>
+                                <ul>
+                                    <li>Électronique parfois capricieuse</li>
+                                    <li>Boîte EAT8 lente à froid</li>
+                                    <li>Vanne EGR fragile après 100 000 km</li>
+                                    <li>Places arrière un peu justes</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="alert-card info" id="recallAlert" style="display:none;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                            <span id="recallAlertText">Rappel constructeur détecté — vérifiez auprès du concessionnaire.</span>
+                        </div>
+                        <div class="affiliate-card">
+                            <div class="affiliate-icon">🏪</div>
+                            <div class="affiliate-text">
+                                <span class="affiliate-title">Garantie panne mécanique</span>
+                                <span class="affiliate-desc">Protégez-vous dès 19€/mois — iDGarages</span>
+                            </div>
+                            <span class="affiliate-arrow">→</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ENTRETIEN PRÉVU -->
+                <div class="section">
+                    <div class="section-header" onclick="toggleSection(this)">
+                        <div class="section-title-group">
+                            <div class="section-icon pink">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            </div>
+                            <h3>Entretien à prévoir</h3>
+                        </div>
+                        <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                    <div class="section-content">
+                        <div class="timeline">
+                            <div class="timeline-item soon">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <span class="timeline-km">~90 000 km</span>
+                                    <span class="timeline-action">Révision complète + filtres</span>
+                                    <span class="timeline-cost">~350€</span>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <span class="timeline-km">~100 000 km</span>
+                                    <span class="timeline-action">Plaquettes de frein avant</span>
+                                    <span class="timeline-cost">~180€</span>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <span class="timeline-km">~120 000 km</span>
+                                    <span class="timeline-action">Courroie de distribution</span>
+                                    <span class="timeline-cost">~600€</span>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <span class="timeline-km">~130 000 km</span>
+                                    <span class="timeline-action">Embrayage (si manuel)</span>
+                                    <span class="timeline-cost">~800€</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="affiliate-card">
+                            <div class="affiliate-icon">🔧</div>
+                            <div class="affiliate-text">
+                                <span class="affiliate-title">Trouvez un garage près de chez vous</span>
+                                <span class="affiliate-desc">Comparez les prix et prenez RDV — Vroomly</span>
+                            </div>
+                            <span class="affiliate-arrow">→</span>
+                        </div>
+                        <div class="affiliate-card">
+                            <div class="affiliate-icon">🛒</div>
+                            <div class="affiliate-text">
+                                <span class="affiliate-title">Achetez vos pièces auto -50%</span>
+                                <span class="affiliate-desc">Plaquettes, filtres, courroie — Mister-Auto.com</span>
+                            </div>
+                            <span class="affiliate-arrow">→</span>
+                        </div>
+                        <div class="affiliate-card">
+                            <div class="affiliate-icon">🏷️</div>
+                            <div class="affiliate-text">
+                                <span class="affiliate-title">Forfait révision tout compris</span>
+                                <span class="affiliate-desc">À partir de 79€ — Feu Vert / Norauto</span>
+                            </div>
+                            <span class="affiliate-arrow">→</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COMPARAISON ÉLECTRIQUE -->
+                <div class="section">
+                    <div class="section-header" onclick="toggleSection(this)">
+                        <div class="section-title-group">
+                            <div class="section-icon emerald">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                            </div>
+                            <h3>Et en électrique ?</h3>
+                        </div>
+                        <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                    <div class="section-content">
+                        <div class="comparison-card">
+                            <div class="comparison-item current">
+                                <span class="comparison-label">Votre véhicule</span>
+                                <span class="comparison-name">Peugeot 308 BlueHDi</span>
+                                <span class="comparison-cost">~1 250€/an en carburant</span>
+                            </div>
+                            <div class="comparison-vs">VS</div>
+                            <div class="comparison-item electric">
+                                <span class="comparison-label">Équivalent électrique</span>
+                                <span class="comparison-name">Peugeot e-308</span>
+                                <span class="comparison-cost">~380€/an en électricité</span>
+                            </div>
+                        </div>
+                        <div class="savings-highlight">
+                            <span class="savings-amount">Économie : ~870€/an</span>
+                        </div>
+                        <div class="affiliate-card">
+                            <div class="affiliate-icon">⚡</div>
+                            <div class="affiliate-text">
+                                <span class="affiliate-title">Découvrez la Peugeot e-308</span>
+                                <span class="affiliate-desc">Essai gratuit près de chez vous — Peugeot.fr</span>
+                            </div>
+                            <span class="affiliate-arrow">→</span>
+                        </div>
+                        <div class="affiliate-card">
+                            <div class="affiliate-icon">🔋</div>
+                            <div class="affiliate-text">
+                                <span class="affiliate-title">Installez une borne chez vous</span>
+                                <span class="affiliate-desc">Devis gratuit en 2 min — Wallbox / Zeplug</span>
+                            </div>
+                            <span class="affiliate-arrow">→</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- PARTENAIRES -->
+            <div class="partners-section">
+                <span class="partners-label">NOS PARTENAIRES</span>
+                <div class="partners-logos">
+                    <span class="partner-tag">LesFurets</span>
+                    <span class="partner-tag">LeLynx</span>
+                    <span class="partner-tag">Oscaro</span>
+                    <span class="partner-tag">Vroomly</span>
+                    <span class="partner-tag">Mister Auto</span>
+                    <span class="partner-tag">Aramis Auto</span>
+                    <span class="partner-tag">Norauto</span>
+                    <span class="partner-tag">Feu Vert</span>
+                    <span class="partner-tag">iDGarages</span>
+                    <span class="partner-tag">La Centrale</span>
+                    <span class="partner-tag">Eplaque</span>
+                </div>
+            </div>
+
+            <!-- FOOTER ACTIONS -->
+            <div class="result-footer">
+                <button class="btn-primary" id="newScanBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    Nouveau scan
+                </button>
+                <button class="btn-secondary" id="compareBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    Comparer avec un autre
+                </button>
+            </div>
+
+            <!-- Partner links -->
+            <a class="ad-banner" href="https://www.lacentrale.fr/cote-voiture.html" target="_blank" rel="noopener sponsored">
+                <span class="ad-label">Partenaire</span>
+                <div class="ad-content">
+                    <span>🚗 Estimer la valeur de votre voiture — La Centrale</span>
+                </div>
+            </a>
+
+            <a class="ad-banner" style="margin-top:8px" href="https://www.lelynx.fr/assurance-auto/" target="_blank" rel="noopener sponsored">
+                <span class="ad-label">Partenaire</span>
+                <div class="ad-content">
+                    <span>🛡️ Comparateur assurance auto — LeLynx.fr</span>
+                </div>
+            </a>
+        </div>
+
+        <!-- HISTORY VIEW -->
+        <div id="historyView" class="view history-view">
+            <div class="page-header">
+                <h2>Historique</h2>
+                <p class="page-subtitle">Vos derniers scans</p>
+            </div>
+            <div class="page-content" id="historyList">
+                <div class="empty-state" id="historyEmpty">
+                    <div class="empty-icon">🕐</div>
+                    <h3>Aucun scan</h3>
+                    <p>Scannez votre premier véhicule pour commencer !</p>
+                    <button class="btn-primary" id="historyToScan" style="margin-top:16px;max-width:200px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                        Scanner
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ALERTS VIEW -->
+        <div id="alertsView" class="view alerts-view">
+            <div class="page-header">
+                <h2>Alertes</h2>
+                <p class="page-subtitle">Notifications & rappels</p>
+            </div>
+            <div class="page-content">
+                <div class="alert-list" id="alertList">
+                    <div class="alert-item">
+                        <div class="alert-item-icon green-bg">🔔</div>
+                        <div class="alert-item-text">
+                            <span class="alert-item-title">Alerte prix activée</span>
+                            <span class="alert-item-desc">Peugeot 308 — Vous serez notifié si le prix passe sous 14 000€</span>
+                            <span class="alert-item-time">Configurée aujourd'hui</span>
+                        </div>
+                    </div>
+                    <div class="alert-item">
+                        <div class="alert-item-icon orange-bg">📋</div>
+                        <div class="alert-item-text">
+                            <span class="alert-item-title">Rappel contrôle technique</span>
+                            <span class="alert-item-desc">Peugeot 308 AB-123-CD — Prochain CT avant le 12/01/2028</span>
+                            <span class="alert-item-time">605 jours restants</span>
+                        </div>
+                    </div>
+                    <div class="alert-item">
+                        <div class="alert-item-icon red-bg">⚠️</div>
+                        <div class="alert-item-text">
+                            <span class="alert-item-title">Restriction ZFE à venir</span>
+                            <span class="alert-item-desc">Votre Peugeot 308 Crit'Air 2 sera interdit à Paris dès 2028</span>
+                            <span class="alert-item-time">Dans ~2 ans</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert-card info" style="margin:16px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    <span>Les alertes sont créées automatiquement lorsque vous scannez un véhicule. Activez les notifications pour ne rien manquer.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROFILE VIEW -->
+        <div id="profileView" class="view profile-view">
+            <div class="page-header">
+                <h2>Profil</h2>
+                <p class="page-subtitle">Paramètres & informations</p>
+            </div>
+            <div class="page-content">
+                <div class="profile-card">
+                    <div class="profile-avatar">👤</div>
+                    <div class="profile-info">
+                        <span class="profile-name">Utilisateur ScanCar</span>
+                        <span class="profile-plan">Plan gratuit</span>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h4 class="settings-title">Statistiques</h4>
+                    <div class="stat-grid">
+                        <div class="stat-item">
+                            <span class="stat-number" id="statScans">0</span>
+                            <span class="stat-label">Scans effectués</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="statAlerts">3</span>
+                            <span class="stat-label">Alertes actives</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h4 class="settings-title">Paramètres</h4>
+                    <div class="settings-list">
+                        <div class="setting-item">
+                            <span>🔔 Notifications</span>
+                            <div class="toggle active" id="toggleNotif"></div>
+                        </div>
+                        <div class="setting-item">
+                            <span>🌙 Mode sombre</span>
+                            <div class="toggle active" id="toggleDark"></div>
+                        </div>
+                        <div class="setting-item">
+                            <span>🇫🇷 Pays par défaut</span>
+                            <span class="setting-value">France</span>
+                        </div>
+                        <div class="setting-item">
+                            <span>📏 Unités</span>
+                            <span class="setting-value">Métriques (km, €)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h4 class="settings-title">À propos</h4>
+                    <div class="settings-list">
+                        <div class="setting-item">
+                            <span>📱 Version</span>
+                            <span class="setting-value">1.0.0</span>
+                        </div>
+                        <a href="mentions-legales.html" class="setting-item setting-link">
+                            <span>📄 Mentions légales</span>
+                            <span class="setting-value">→</span>
+                        </a>
+                        <a href="confidentialite.html" class="setting-item setting-link">
+                            <span>🔒 Politique de confidentialité</span>
+                            <span class="setting-value">→</span>
+                        </a>
+                        <a href="cgu.html" class="setting-item setting-link">
+                            <span>📜 Conditions d'utilisation</span>
+                            <span class="setting-value">→</span>
+                        </a>
+                        <a href="cookies.html" class="setting-item setting-link">
+                            <span>🍪 Politique de cookies</span>
+                            <span class="setting-value">→</span>
+                        </a>
+                        <div class="setting-item">
+                            <span>📧 Contact</span>
+                            <span class="setting-value">contact@scancar.app</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="app-footer-info">
+                    <p>ScanCar v1.0.0</p>
+                    <p>Scannez. Découvrez. Décidez.</p>
+                    <p class="footer-copy">© 2026 ScanCar. Tous droits réservés.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Unlock gate: 30-second wait before showing full report -->
+        <div id="rewardedAdOverlay" class="rewarded-overlay hidden">
+            <div class="rewarded-content">
+                <div class="rewarded-header">
+                    <span class="rewarded-badge">Patientez</span>
+                    <span class="rewarded-timer" id="rewardedTimer">30s</span>
+                </div>
+                <div class="rewarded-video-area">
+                    <div class="rewarded-fake-video">
+                        <div class="rewarded-play-icon">
+                            <svg width="60" height="60" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="10" stroke="white" stroke-width="2" fill="none"/><polyline points="12 6 12 12 16 14" stroke="white" stroke-width="2" fill="none"/></svg>
+                        </div>
+                        <div class="rewarded-progress-bar">
+                            <div class="rewarded-progress-fill" id="rewardedProgressFill"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rewarded-footer">
+                    <p class="rewarded-info">Votre rapport complet sera disponible dans quelques secondes</p>
+                    <button class="rewarded-skip hidden" id="rewardedSkipBtn">Voir le rapport →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- INTERSTITIAL AD (shown before results) -->
+        <div id="interstitialAd" class="interstitial hidden">
+            <div class="interstitial-content">
+                <div class="interstitial-badge">Publicité</div>
+                <button class="interstitial-close hidden" id="closeAdBtn">✕</button>
+                <div class="interstitial-body">
+                    <div class="interstitial-sponsor">LesFurets.com</div>
+                    <h3 class="interstitial-title">Votre assurance auto est-elle trop chère ?</h3>
+                    <p class="interstitial-desc">Comparez +40 assureurs en 5 minutes et économisez jusqu'à 350€/an sur votre assurance auto.</p>
+                    <button class="interstitial-cta">Comparer maintenant →</button>
+                    <div class="interstitial-timer">Fermer dans <span id="adTimer">5</span>s</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MENU OVERLAY -->
+        <div id="menuOverlay" class="menu-overlay hidden" role="dialog" aria-modal="true" aria-label="Menu">
+            <div class="menu-sheet">
+                <div class="menu-handle"></div>
+                <nav class="menu-nav">
+                    <button class="menu-item" data-action="history">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        Historique
+                    </button>
+                    <button class="menu-item" data-action="alerts">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+                        Alertes
+                    </button>
+                    <button class="menu-item" data-action="profile">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Profil &amp; Paramètres
+                    </button>
+                    <div class="menu-divider"></div>
+                    <a href="mentions-legales.html" class="menu-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        Mentions légales
+                    </a>
+                    <a href="confidentialite.html" class="menu-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        Confidentialité
+                    </a>
+                    <a href="cgu.html" class="menu-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        CGU
+                    </a>
+                    <a href="cookies.html" class="menu-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="8" cy="9" r="1.5" fill="currentColor"/><circle cx="14" cy="8" r="1" fill="currentColor"/><circle cx="15" cy="14" r="1.5" fill="currentColor"/><circle cx="9" cy="15" r="1" fill="currentColor"/></svg>
+                        Cookies
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- NAV BAR -->
+        <nav class="navbar">
+            <button class="nav-item active" data-view="scan">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                <span>Scanner</span>
+            </button>
+            <button class="nav-item" data-view="history">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>Historique</span>
+            </button>
+            <button class="nav-item" data-view="alerts">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+                <span>Alertes</span>
+            </button>
+            <button class="nav-item" data-view="profile">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>Profil</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- COOKIE BANNER -->
+    <div id="cookieBanner" class="cookie-banner hidden">
+        <div class="cookie-banner-content">
+            <h4>🍪 Cookies</h4>
+            <p>ScanCar utilise des cookies pour mesurer l'audience et afficher des publicités pertinentes. <a href="cookies.html">En savoir plus</a></p>
+            <div class="cookie-buttons">
+                <button class="cookie-btn refuse" id="cookieRefuse">Refuser</button>
+                <button class="cookie-btn accept" id="cookieAccept">Accepter</button>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="plateCanvas" style="display:none"></canvas>
+    <script src="js/paywall.js"></script>
+    <script src="js/affiliate-tracking.js"></script>
+    <script src="js/carvertical.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
+</body>
+</html>

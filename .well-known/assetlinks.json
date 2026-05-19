@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.scancar.app",
+      "sha256_cert_fingerprints": ["77999020B7E9069B5B9A0902EEDA5A71B8C8C900626C4F0B10F50F36418B36E6"]
+    }
+  }
+]
