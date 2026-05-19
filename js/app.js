@@ -518,7 +518,7 @@
 
     // ========== API CONFIGURATION ==========
     // Clé déplacée côté serveur — proxy Netlify Function
-    const SIV_ENDPOINT = '/.netlify/functions/siv';
+    const SIV_ENDPOINT = 'https://scancar-siv.walaceprod.workers.dev';
 
     function convertApiResponse(d) {
         const data = d.data || d;

@@ -5,7 +5,7 @@
 
 window.carvertical = (function () {
 
-    const ENDPOINT = '/.netlify/functions/carvertical';
+    const ENDPOINT = 'https://scancar-carvertical.walaceprod.workers.dev';
 
     // ---- Fetch ----
     async function fetchReport(plate) {
