@@ -7,9 +7,9 @@ window.SCANCAR_CONFIG = {
     // RevenueCat API Key — Set via Vercel environment variable
     // Create account at https://app.revenuecat.com
     // Leave empty to use ad-based unlock fallback
-    REVENUECAT_API_KEY: process.env.REACT_APP_REVENUECAT_API_KEY || '',
+    REVENUECAT_API_KEY: '',
 
     // Stripe Public Key — Set via Vercel environment variable
     // Create account at https://stripe.com
-    STRIPE_PUBLIC_KEY: process.env.REACT_APP_STRIPE_PUBLIC_KEY || ''
+    STRIPE_PUBLIC_KEY: ''
 };
