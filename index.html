@@ -88,6 +88,16 @@
             gtag('config', ga4, { anonymize_ip: true, allow_google_signals: false });
         }
     </script>
+    <!-- RevenueCat SDK — for premium subscriptions -->
+    <script src="https://cdn.revenuecat.com/js/1/rc.js"></script>
+    <script>
+        // Initialize RevenueCat SDK
+        window.Purchases = window.Purchases || {};
+        if (typeof window.revenuecat === 'undefined') {
+            // SDK will be available as window.Purchases after loading
+            console.log('[ScanCar] RevenueCat SDK loaded');
+        }
+    </script>
     <!-- AdSense chargé dynamiquement après consentement (voir app.js) -->
 </head>
 <body>

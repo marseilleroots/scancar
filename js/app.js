@@ -999,7 +999,12 @@
     if (watchAdBtn) {
         watchAdBtn.addEventListener('click', () => {
             window.unlockManager?.trackEvent('watch_ad_click');
-            showRewardedAd();
+            // Show premium modal (RevenueCat) or fallback to ad-based unlock
+            if (window.unlockManager?.showPurchaseModal) {
+                window.unlockManager.showPurchaseModal();
+            } else {
+                showRewardedAd();
+            }
         });
     }
     if (rewardedSkipBtn) {
@@ -1012,7 +1017,12 @@
     if (unlockReportBtn) {
         unlockReportBtn.addEventListener('click', () => {
             if (!fullReportSection.classList.contains('unlocked')) {
-                showRewardedAd();
+                // Show premium modal (RevenueCat) or fallback to ad-based unlock
+                if (window.unlockManager?.showPurchaseModal) {
+                    window.unlockManager.showPurchaseModal();
+                } else {
+                    showRewardedAd();
+                }
             }
         });
     }

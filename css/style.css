@@ -2137,3 +2137,137 @@ html, body {
     background: rgba(255,255,255,0.07);
     margin: 6px 0;
 }
+
+/* ========== PAYWALL MODAL ========== */
+.scancar-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 20px;
+}
+
+.scancar-paywall {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 16px;
+    padding: 32px 24px;
+    max-width: 480px;
+    width: 100%;
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    color: #fff;
+}
+
+.paywall-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    border-radius: 8px;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.paywall-close:hover { background: rgba(255,255,255,0.2); }
+
+.scancar-paywall h2 {
+    font-size: 24px;
+    margin: 0 0 12px 0;
+    font-weight: 600;
+}
+
+.paywall-subtitle {
+    color: rgba(255,255,255,0.7);
+    margin: 0 0 28px 0;
+    font-size: 14px;
+}
+
+.paywall-packages {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.paywall-package {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.paywall-package:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(0,212,255,0.5);
+    transform: translateY(-2px);
+}
+
+.paywall-package h3 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.package-price {
+    color: #00d4ff;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+}
+
+.package-desc {
+    color: rgba(255,255,255,0.6);
+    font-size: 13px;
+    margin: 0 0 12px 0;
+}
+
+.btn-purchase {
+    width: 100%;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+}
+
+.btn-purchase:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 16px rgba(0,212,255,0.4);
+}
+
+.btn-purchase:active { transform: scale(0.98); }
+
+.paywall-footer {
+    text-align: center;
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    margin: 0;
+}
+
+.paywall-footer a {
+    color: rgba(0,212,255,0.8);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.paywall-footer a:hover { color: #00d4ff; }
