@@ -12,7 +12,7 @@
       "dest": "https://scancar-worker.gregorybrau.workers.dev/$1"
     },
     {
-      "src": "/(.*)",
+      "src": "^(?!.*\\.(js|css|json|xml|txt|html|map|svg|png|jpg|jpeg|gif|ico|woff|woff2|eot|ttf|webp)).*$",
       "dest": "/index.html",
       "status": 200
     }
