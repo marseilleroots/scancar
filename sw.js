@@ -1,4 +1,4 @@
-const CACHE_NAME = 'scancar-v9';
+const CACHE_NAME = 'scancar-v11';
 const ASSETS = [
     '/',
     '/index.html',
@@ -35,8 +35,9 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
     if (e.request.method !== 'GET') return;
-    // Ne pas cacher les requêtes vers les fonctions Netlify
+    // Ne pas cacher les appels API (Netlify ou Vercel)
     if (e.request.url.includes('/.netlify/functions/')) return;
+    if (e.request.url.includes('/api/')) return;
     e.respondWith(
         caches.match(e.request).then(cached => {
             const fetched = fetch(e.request).then(resp => {
