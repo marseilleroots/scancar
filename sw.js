@@ -1,4 +1,4 @@
-const CACHE_NAME = 'scancar-v14';
+const CACHE_NAME = 'scancar-v15';
 const ASSETS = [
     '/',
     '/index.html',
@@ -31,15 +31,20 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
     if (e.request.method !== 'GET') return;
-    // Ne JAMAIS cacher : API et endpoints dynamiques
-    if (e.request.url.includes('/api/')) return;
-    if (e.request.url.includes('/.netlify/functions/')) return;
-    if (e.request.url.includes('rapidapi.com')) return;
-    if (e.request.url.includes('apiplaqueimmatriculation.com')) return;
 
-    // Stratégie "network-first" pour les fichiers JS/HTML/CSS — toujours dernière version si réseau OK
-    const url = new URL(e.request.url);
-    const isAppFile = /\.(html|js|css)$/.test(url.pathname) || url.pathname === '/';
+    const url = e.request.url;
+    // Ne touche surtout PAS aux endpoints dynamiques — laisse le navigateur faire
+    if (url.includes('/api/') ||
+        url.includes('/.netlify/functions/') ||
+        url.includes('rapidapi.com') ||
+        url.includes('apiplaqueimmatriculation.com') ||
+        url.includes('pagead2.googlesyndication') ||
+        url.includes('googletagmanager')) {
+        return;
+    }
+
+    const uobj = new URL(url);
+    const isAppFile = /\.(html|js|css)$/.test(uobj.pathname) || uobj.pathname === '/';
 
     if (isAppFile) {
         e.respondWith(
@@ -49,26 +54,28 @@ self.addEventListener('fetch', e => {
                     caches.open(CACHE_NAME).then(c => c.put(e.request, clone));
                 }
                 return resp;
-            }).catch(() => caches.match(e.request))
+            }).catch(async () => {
+                const cached = await caches.match(e.request);
+                return cached || new Response('Offline', { status: 503, statusText: 'Offline' });
+            })
         );
         return;
     }
 
-    // Stratégie "cache-first" pour les images/icônes (rapides)
     e.respondWith(
         caches.match(e.request).then(cached => {
-            return cached || fetch(e.request).then(resp => {
+            if (cached) return cached;
+            return fetch(e.request).then(resp => {
                 if (resp && resp.status === 200) {
                     const clone = resp.clone();
                     caches.open(CACHE_NAME).then(c => c.put(e.request, clone));
                 }
                 return resp;
-            });
+            }).catch(() => new Response('', { status: 504 }));
         })
     );
 });
 
-// Permet à l'app de forcer un refresh du SW
 self.addEventListener('message', (e) => {
     if (e.data === 'SKIP_WAITING') self.skipWaiting();
 });
