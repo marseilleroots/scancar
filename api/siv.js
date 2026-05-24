@@ -35,7 +35,9 @@ module.exports = async (req, res) => {
             headers: {
                 'Content-Type': 'application/json',
                 'x-rapidapi-host': RAPIDAPI_HOST,
-                'x-rapidapi-key': apiKey
+                'x-rapidapi-key': apiKey,
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'application/json, text/plain, */*'
             }
         });
 
