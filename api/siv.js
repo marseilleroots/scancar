@@ -1,12 +1,12 @@
 /**
- * ScanCar — Proxy SIV / RapidAPI (Vercel Function)
- * Endpoint : GET /api/siv?plate=AB-123-CD
+ * ScanCar — Proxy SIV (Vercel Function)
+ * Utilise l'API source apiplaqueimmatriculation.com directement.
+ * Endpoint : GET /api/siv?plate=AB-123-CD[&pays=FR]
  */
 
-const RAPIDAPI_HOST = 'api-plaque-immatriculation-siv2.p.rapidapi.com';
+const API_BASE = 'https://api.apiplaqueimmatriculation.com/plaque';
 
 module.exports = async (req, res) => {
-    // CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
@@ -17,24 +17,21 @@ module.exports = async (req, res) => {
     }
 
     const plate = ((req.query && req.query.plate) || '').toString().trim().toUpperCase();
+    const pays = ((req.query && req.query.pays) || 'FR').toString().trim().toUpperCase();
+
     if (!plate || plate.length < 4) {
         res.status(400).json({ error: 'Plaque manquante ou invalide' });
         return;
     }
 
-    const apiKey = process.env.RAPIDAPI_KEY;
-    if (!apiKey) {
-        res.status(503).json({ error: 'API non configurée (RAPIDAPI_KEY manquante)' });
-        return;
-    }
+    // Token : variable d'env si disponible, sinon TokenDemo2026B (token démo public)
+    const token = process.env.APIPLAQUE_TOKEN || 'TokenDemo2026B';
 
     try {
-        const url = `https://${RAPIDAPI_HOST}/api.php?immatriculation=${encodeURIComponent(plate)}`;
+        const url = `${API_BASE}?immatriculation=${encodeURIComponent(plate)}&token=${encodeURIComponent(token)}&pays=${encodeURIComponent(pays)}`;
         const resp = await fetch(url, {
-            method: 'GET',
+            method: 'POST',
             headers: {
-                'x-rapidapi-host': RAPIDAPI_HOST,
-                'x-rapidapi-key': apiKey,
                 'Accept': '*/*'
             }
         });
@@ -50,6 +47,6 @@ module.exports = async (req, res) => {
 
         res.status(200).json(json);
     } catch (e) {
-        res.status(500).json({ error: e.message, stack: e.stack });
+        res.status(500).json({ error: e.message });
     }
 };
