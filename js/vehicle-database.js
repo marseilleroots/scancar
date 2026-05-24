@@ -34,7 +34,7 @@ const vehicleDatabase = {
 
     'BX-234-LN': {
         type: 'car', typeLabel: 'Voiture',
-        marque: 'Peugeot', modelo: '3008', version: 'Allure Pack',
+        marque: 'Peugeot', modele: '3008', version: 'Allure Pack',
         annee: '2022', mec: '23/08/2022', age: '1 an et 9 mois',
         couleur: 'Noir Obsidien', pays: '🇫🇷 France (Sochaux)',
         vin: 'VF3LCYHZ••••••', proprio: '1',
