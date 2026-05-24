@@ -3,7 +3,7 @@
  * Endpoint : GET /api/siv?plate=AB-123-CD
  */
 
-const RAPIDAPI_HOST = 'api-plaque-immatriculation-siv1.p.rapidapi.com';
+const RAPIDAPI_HOST = 'api-plaque-immatriculation-siv2.p.rapidapi.com';
 
 module.exports = async (req, res) => {
     // CORS
@@ -29,7 +29,7 @@ module.exports = async (req, res) => {
     }
 
     try {
-        const url = `https://${RAPIDAPI_HOST}/info.php?immatriculation=${encodeURIComponent(plate)}`;
+        const url = `https://${RAPIDAPI_HOST}/api.php?immatriculation=${encodeURIComponent(plate)}`;
         const resp = await fetch(url, {
             method: 'GET',
             headers: {
