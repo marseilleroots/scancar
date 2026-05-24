@@ -5,24 +5,27 @@
 
 const RAPIDAPI_HOST = 'api-plaque-immatriculation-siv1.p.rapidapi.com';
 
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
     // CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
 
     if (req.method === 'OPTIONS') {
-        return res.status(204).end();
+        res.status(204).end();
+        return;
     }
 
-    const plate = (req.query.plate || '').trim().toUpperCase();
+    const plate = ((req.query && req.query.plate) || '').toString().trim().toUpperCase();
     if (!plate || plate.length < 4) {
-        return res.status(400).json({ error: 'Plaque manquante ou invalide' });
+        res.status(400).json({ error: 'Plaque manquante ou invalide' });
+        return;
     }
 
     const apiKey = process.env.RAPIDAPI_KEY;
     if (!apiKey) {
-        return res.status(503).json({ error: 'API non configurée (RAPIDAPI_KEY manquante)' });
+        res.status(503).json({ error: 'API non configurée (RAPIDAPI_KEY manquante)' });
+        return;
     }
 
     try {
@@ -41,11 +44,12 @@ export default async function handler(req, res) {
         try { json = JSON.parse(text); } catch (e) { json = { raw: text }; }
 
         if (!resp.ok) {
-            return res.status(resp.status).json({ error: `API error ${resp.status}`, details: json });
+            res.status(resp.status).json({ error: `API error ${resp.status}`, details: json });
+            return;
         }
 
-        return res.status(200).json(json);
+        res.status(200).json(json);
     } catch (e) {
-        return res.status(500).json({ error: e.message });
+        res.status(500).json({ error: e.message, stack: e.stack });
     }
-}
+};
