@@ -1154,6 +1154,9 @@
     const reportFull = document.getElementById('reportFull');
     const fullReportSection = document.getElementById('fullReportSection');
 
+    // Écoute l'événement émis par paywall.js quand RevenueCat n'est pas dispo
+    document.addEventListener('scancar:show-rewarded-ad', () => showRewardedAd());
+
     function showRewardedAd() {
         rewardedOverlay.classList.remove('hidden');
         rewardedSkipBtn.classList.add('hidden');
@@ -1197,7 +1200,9 @@
         watchAdBtn.addEventListener('click', () => {
             window.unlockManager?.trackEvent('watch_ad_click');
             // Show premium modal (RevenueCat) or fallback to ad-based unlock
-            if (window.unlockManager?.showPurchaseModal) {
+            // Si RevenueCat est vraiment initialisé, montre la modal d'achat
+            // Sinon, lance directement la pub récompensée (30s)
+            if (window.unlockManager?.revenuecatInitialized) {
                 window.unlockManager.showPurchaseModal();
             } else {
                 showRewardedAd();

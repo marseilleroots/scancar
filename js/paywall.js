@@ -195,7 +195,8 @@
         showRewardedAd() {
             // Fallback to 30-second ad if RevenueCat unavailable
             console.log('[ScanCar] Using ad-based unlock (fallback)');
-            // This is called from app.js in the ad-based unlock flow
+            // Dispatche un événement écouté par app.js pour lancer la pub récompensée
+            document.dispatchEvent(new CustomEvent('scancar:show-rewarded-ad'));
         },
 
         // ========== ANALYTICS ==========

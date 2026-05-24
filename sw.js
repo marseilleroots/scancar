@@ -1,4 +1,4 @@
-const CACHE_NAME = 'scancar-v12';
+const CACHE_NAME = 'scancar-v13';
 const ASSETS = [
     '/',
     '/index.html',
