@@ -823,12 +823,81 @@
         interstitial.querySelector('.interstitial-cta').onclick = closeAd;
     }
 
-    // Event listeners
-    captureBtn.addEventListener('click', () => {
-        const plates = Object.keys(vehicleDB);
-        const randomPlate = plates[Math.floor(Math.random() * plates.length)];
-        plateInput.value = randomPlate;
-        startSearch(randomPlate);
+    // === OCR : extraction du pattern de plaque française ===
+    function extractFrenchPlate(text) {
+        if (!text) return null;
+        const cleaned = text.toUpperCase()
+            .replace(/[Oo]/g, '0').replace(/[Il|]/g, '1')
+            .replace(/\s+/g, '')
+            .replace(/[^A-Z0-9\-]/g, '');
+        // Format moderne : XX-NNN-XX (2 lettres - 3 chiffres - 2 lettres)
+        let m = cleaned.match(/([A-Z]{2})[-]?(\d{3})[-]?([A-Z]{2})/);
+        if (m) return m[1] + '-' + m[2] + '-' + m[3];
+        // Format ancien : NNNN XX NN
+        m = cleaned.match(/(\d{1,4})([A-Z]{1,3})(\d{2,3})/);
+        if (m) return m[1] + ' ' + m[2] + ' ' + m[3];
+        return null;
+    }
+
+    // === OCR : reconnaissance via Tesseract.js ===
+    async function recognizePlateFromImage(imageSource) {
+        if (typeof Tesseract === 'undefined') {
+            alert('Module OCR indisponible. Saisissez la plaque manuellement.');
+            return null;
+        }
+        loadingPlateText.textContent = 'Analyse de l\'image...';
+        loadingText.textContent = 'Lecture de la plaque par OCR...';
+        showView('loadingView');
+        try {
+            const { data } = await Tesseract.recognize(imageSource, 'eng', {
+                tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-',
+                tessedit_pageseg_mode: 7
+            });
+            const plate = extractFrenchPlate(data.text);
+            return plate;
+        } catch (e) {
+            console.log('OCR error:', e);
+            return null;
+        }
+    }
+
+    // === Bouton appareil photo : capture caméra + OCR ===
+    captureBtn.addEventListener('click', async () => {
+        // Si la caméra tourne déjà, capture l'image
+        if (camera && camera.srcObject) {
+            const canvas = document.getElementById('plateCanvas');
+            canvas.width = camera.videoWidth;
+            canvas.height = camera.videoHeight;
+            canvas.getContext('2d').drawImage(camera, 0, 0);
+            const dataUrl = canvas.toDataURL('image/png');
+            const plate = await recognizePlateFromImage(dataUrl);
+            if (plate) {
+                plateInput.value = plate;
+                startSearch(plate);
+            } else {
+                showView('scanView');
+                alert('Plaque non détectée. Essayez en plein cadre, bien éclairé, ou saisissez-la manuellement.');
+            }
+            return;
+        }
+        // Pas de caméra : fallback fichier
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.capture = 'environment';
+        input.onchange = async (ev) => {
+            const file = ev.target.files && ev.target.files[0];
+            if (!file) return;
+            const plate = await recognizePlateFromImage(URL.createObjectURL(file));
+            if (plate) {
+                plateInput.value = plate;
+                startSearch(plate);
+            } else {
+                showView('scanView');
+                alert('Plaque non détectée. Essayez une photo plus nette ou saisissez-la manuellement.');
+            }
+        };
+        input.click();
     });
 
     searchBtn.addEventListener('click', () => {
@@ -863,15 +932,22 @@
         plateInput.value = '';
     });
 
-    // Gallery button (file input for photo)
+    // Gallery button : sélection photo depuis galerie + OCR réel
     galleryBtn.addEventListener('click', () => {
         const input = document.createElement('input');
         input.type = 'file';
         input.accept = 'image/*';
-        input.onchange = () => {
-            const randomPlate = Object.keys(vehicleDB)[Math.floor(Math.random() * Object.keys(vehicleDB).length)];
-            plateInput.value = randomPlate;
-            startSearch(randomPlate);
+        input.onchange = async (ev) => {
+            const file = ev.target.files && ev.target.files[0];
+            if (!file) return;
+            const plate = await recognizePlateFromImage(URL.createObjectURL(file));
+            if (plate) {
+                plateInput.value = plate;
+                startSearch(plate);
+            } else {
+                showView('scanView');
+                alert('Plaque non détectée sur la photo. Essayez une image plus nette et bien cadrée.');
+            }
         };
         input.click();
     });
