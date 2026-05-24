@@ -569,33 +569,57 @@
         const photoModele = data.photo_modele || '';
         const logoMarque = data.logo_marque || '';
 
-        // === ESTIMATIONS DE PRIX ===
-        // Estimation du prix neuf basée sur puissance + type véhicule
-        const puisCv = parseInt(puisCh) || 100;
-        let prixNeufBase = type === 'moto' ? 4000 + puisCv * 60
-                          : type === 'van' ? 18000 + puisCv * 120
-                          : 12000 + puisCv * 95;
+        // === ESTIMATIONS DE PRIX (calibrées sur marché réel) ===
+        // Prix neuf basé sur puissance fiscale (cv) qui est plus fiable
+        const puisCv = parseInt(puisCh) || 100;       // chevaux DIN
+        const cvFisc = parseInt(cv) || 5;             // cv fiscaux
+        // Base prix neuf : modélisé sur Argus/Centrale (formule plus modérée)
+        let prixNeufBase = type === 'moto' ? 3000 + puisCv * 45
+                          : type === 'van' ? 16000 + puisCv * 80
+                          : 9500 + puisCv * 65;
         // Premium pour grandes marques
         const marqueLower = (marque || '').toUpperCase();
-        if (['MERCEDES-BENZ','MERCEDES','BMW','AUDI','PORSCHE','LEXUS','VOLVO','JAGUAR','LAND ROVER'].some(m => marqueLower.includes(m))) {
-            prixNeufBase *= 1.35;
-        } else if (['VOLKSWAGEN','DS','MINI','ALFA ROMEO','TESLA'].some(m => marqueLower.includes(m))) {
-            prixNeufBase *= 1.15;
-        }
-        // Bonus version sportive
-        const versionUpper = (version || '').toUpperCase();
-        if (versionUpper.match(/\b(GT|GTI|R|RS|AMG|M[1-9]|S[1-9]|TYPE R|STI)\b/)) {
+        if (['PORSCHE','TESLA','JAGUAR','LAND ROVER','MASERATI','BENTLEY'].some(m => marqueLower.includes(m))) {
             prixNeufBase *= 1.5;
+        } else if (['MERCEDES-BENZ','MERCEDES','BMW','AUDI','LEXUS','VOLVO'].some(m => marqueLower.includes(m))) {
+            prixNeufBase *= 1.25;
+        } else if (['VOLKSWAGEN','DS','MINI','ALFA ROMEO'].some(m => marqueLower.includes(m))) {
+            prixNeufBase *= 1.10;
+        }
+        // Bonus version sportive (réduit)
+        const versionUpper = (version || '').toUpperCase();
+        if (versionUpper.match(/\b(AMG|TYPE R|RS|STI|GT3|GTR)\b/)) {
+            prixNeufBase *= 1.4;
+        } else if (versionUpper.match(/\b(GTI|R|GT|S[0-9])\b/)) {
+            prixNeufBase *= 1.2;
         }
 
-        // Décote progressive selon l'âge
-        const decoteAn = 0.13;
-        let valeurActu = prixNeufBase * Math.pow(1 - decoteAn, Math.max(0, ageYears));
-        valeurActu = Math.max(800, Math.round(valeurActu / 100) * 100);
+        // Décote progressive selon l'âge (réaliste FR : 22% an 1, puis 15% les suivantes)
+        let valeurActu;
+        if (ageYears <= 0) {
+            valeurActu = prixNeufBase;
+        } else if (ageYears <= 1) {
+            valeurActu = prixNeufBase * 0.78;          // -22% la 1ère année
+        } else {
+            valeurActu = prixNeufBase * 0.78 * Math.pow(0.85, ageYears - 1);
+        }
+        // Plancher minimum selon type
+        const minPrix = type === 'moto' ? 600 : type === 'van' ? 1500 : 1000;
+        valeurActu = Math.max(minPrix, Math.round(valeurActu / 100) * 100);
 
-        const argusLow = Math.round(valeurActu * 0.92 / 100) * 100;
-        const argusHigh = Math.round(valeurActu * 1.08 / 100) * 100;
+        const argusLow = Math.round(valeurActu * 0.88 / 100) * 100;
+        const argusHigh = Math.round(valeurActu * 1.12 / 100) * 100;
         const fmtPrix = (n) => n.toLocaleString('fr-FR') + '€';
+        const decoteAn = ageYears <= 1 ? 0.22 : 0.15;
+
+        // === LIENS RÉELS vers annonces marché ===
+        const queryQ = encodeURIComponent(`${marque} ${modele} ${version}`.trim());
+        const queryM = encodeURIComponent(marque || '');
+        const queryMo = encodeURIComponent(modele || '');
+        const lienLBC = `https://www.leboncoin.fr/recherche?category=2&text=${queryQ}`;
+        const lienCentrale = `https://www.lacentrale.fr/listing?makesModelsCommercialNames=${queryM}%3A${queryMo}`;
+        const lienArgus = `https://www.largus.fr/cote-auto/${(marque || '').toLowerCase().replace(/\s+/g,'-')}/${(modele || '').toLowerCase().replace(/\s+/g,'-')}.html`;
+        const lienAutoscout = `https://www.autoscout24.fr/lst/${(marque || '').toLowerCase().replace(/\s+/g,'-')}/${(modele || '').toLowerCase().replace(/\s+/g,'-')}`;
 
         // === NORME EURO selon année ===
         const an = parseInt(annee) || 0;
@@ -703,6 +727,10 @@
             argus: fmtPrix(valeurActu),
             lbc: fmtPrix(Math.round(valeurActu * 1.03 / 100) * 100),
             centrale: fmtPrix(Math.round(valeurActu * 1.06 / 100) * 100),
+            lienLBC: lienLBC,
+            lienCentrale: lienCentrale,
+            lienArgus: lienArgus,
+            lienAutoscout: lienAutoscout,
             tendance: tendance,
             decote: '~' + Math.round(decoteAn * 100) + '% / an',
             annonces: annonces,
@@ -828,7 +856,6 @@
     function extractFrenchPlate(text) {
         if (!text) return null;
         const cleaned = text.toUpperCase()
-            .replace(/[Oo]/g, '0').replace(/[Il|]/g, '1')
             .replace(/\s+/g, '')
             .replace(/[^A-Z0-9\-]/g, '');
         // Format moderne : XX-NNN-XX (2 lettres - 3 chiffres - 2 lettres)
@@ -840,26 +867,67 @@
         return null;
     }
 
-    // === OCR : reconnaissance via Tesseract.js ===
-    async function recognizePlateFromImage(imageSource) {
-        if (typeof Tesseract === 'undefined') {
-            alert('Module OCR indisponible. Saisissez la plaque manuellement.');
+    // === Convertir une dataURL/blob URL en Blob ===
+    async function imageSourceToBlob(src) {
+        if (src instanceof Blob) return src;
+        const resp = await fetch(src);
+        return await resp.blob();
+    }
+
+    // === OCR via Plate Recognizer (API spécialisée plaques — bien plus précis) ===
+    async function recognizeWithPlateRecognizer(imageSource) {
+        try {
+            const blob = await imageSourceToBlob(imageSource);
+            const formData = new FormData();
+            formData.append('upload', blob, 'plate.jpg');
+            formData.append('regions', 'fr');
+            const resp = await fetch('/api/plate', {
+                method: 'POST',
+                body: formData
+            });
+            if (!resp.ok) return null;
+            const json = await resp.json();
+            if (json && json.results && json.results.length > 0) {
+                // Prend le résultat avec la meilleure confiance
+                const best = json.results.sort((a, b) => (b.score || 0) - (a.score || 0))[0];
+                if (best && best.plate) return extractFrenchPlate(best.plate);
+            }
+            return null;
+        } catch (e) {
+            console.log('PlateRecognizer error:', e);
             return null;
         }
-        loadingPlateText.textContent = 'Analyse de l\'image...';
-        loadingText.textContent = 'Lecture de la plaque par OCR...';
-        showView('loadingView');
+    }
+
+    // === OCR fallback : Tesseract.js ===
+    async function recognizeWithTesseract(imageSource) {
+        if (typeof Tesseract === 'undefined') return null;
         try {
             const { data } = await Tesseract.recognize(imageSource, 'eng', {
                 tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-',
                 tessedit_pageseg_mode: 7
             });
-            const plate = extractFrenchPlate(data.text);
-            return plate;
+            return extractFrenchPlate(data.text);
         } catch (e) {
-            console.log('OCR error:', e);
+            console.log('Tesseract error:', e);
             return null;
         }
+    }
+
+    // === Reconnaissance plaque : essaie PlateRecognizer d'abord, fallback Tesseract ===
+    async function recognizePlateFromImage(imageSource) {
+        loadingPlateText.textContent = 'Analyse de l\'image...';
+        loadingText.textContent = 'Lecture de la plaque (IA)...';
+        showView('loadingView');
+
+        // 1. Essai avec Plate Recognizer (précis, gratuit 2500 req/mois)
+        let plate = await recognizeWithPlateRecognizer(imageSource);
+        if (plate) return plate;
+
+        // 2. Fallback Tesseract si l'API n'est pas configurée ou échoue
+        loadingText.textContent = 'Analyse approfondie...';
+        plate = await recognizeWithTesseract(imageSource);
+        return plate;
     }
 
     // === Bouton appareil photo : capture caméra + OCR ===
@@ -1278,6 +1346,17 @@
                         Entretien ${v.entretien || '—'}<br/>
                         Pneus ${v.pneus || '—'}
                     </div>
+                </div>
+
+                <div class="report-block" style="background:#1a2332;border-radius:12px;padding:16px;margin:12px 0;color:#fff;">
+                    <h4 style="margin:0 0 10px 0;font-size:15px;">🛒 Voir les annonces pour ce modèle</h4>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                        <a href="${v.lienLBC || '#'}" target="_blank" rel="noopener" style="background:#ff6e14;color:#fff;text-decoration:none;padding:10px;border-radius:8px;text-align:center;font-weight:600;font-size:13px;">LeBonCoin →</a>
+                        <a href="${v.lienCentrale || '#'}" target="_blank" rel="noopener" style="background:#ffd900;color:#000;text-decoration:none;padding:10px;border-radius:8px;text-align:center;font-weight:600;font-size:13px;">La Centrale →</a>
+                        <a href="${v.lienArgus || '#'}" target="_blank" rel="noopener" style="background:#003478;color:#fff;text-decoration:none;padding:10px;border-radius:8px;text-align:center;font-weight:600;font-size:13px;">Cote Argus →</a>
+                        <a href="${v.lienAutoscout || '#'}" target="_blank" rel="noopener" style="background:#ffba00;color:#000;text-decoration:none;padding:10px;border-radius:8px;text-align:center;font-weight:600;font-size:13px;">AutoScout24 →</a>
+                    </div>
+                    <p style="margin:10px 0 0 0;font-size:11px;opacity:0.7;text-align:center;">Comparez les prix réels du marché en 1 clic</p>
                 </div>
 
                 <div class="report-block" style="background:#1a2332;border-radius:12px;padding:16px;margin:12px 0;color:#fff;">
