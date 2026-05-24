@@ -3,7 +3,7 @@
  * Endpoint : GET /api/siv?plate=AB-123-CD
  */
 
-const RAPIDAPI_HOST = 'api-plaque-immatriculation-siv.p.rapidapi.com';
+const RAPIDAPI_HOST = 'api-plaque-immatriculation-siv1.p.rapidapi.com';
 
 export default async function handler(req, res) {
     // CORS
@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const url = `https://${RAPIDAPI_HOST}/get-vehicule-info?immatriculation=${encodeURIComponent(plate)}`;
+        const url = `https://${RAPIDAPI_HOST}/info.php?immatriculation=${encodeURIComponent(plate)}`;
         const resp = await fetch(url, {
             method: 'GET',
             headers: {
