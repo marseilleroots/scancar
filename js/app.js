@@ -1183,11 +1183,25 @@
         rewardedOverlay.classList.add('hidden');
         reportTeaser.style.display = 'none';
         reportFull.style.display = 'block';
+        reportFull.classList.add('open');             // force l'ouverture (CSS accordéon)
+        reportFull.style.maxHeight = 'none';          // pas de limite de hauteur
+        reportFull.style.padding = '0 16px 16px';
         fullReportSection.classList.add('unlocked');
+        // Force aussi le header de section à être ouvert visuellement
+        const sectionHeader = fullReportSection.querySelector('.section-header');
+        if (sectionHeader) sectionHeader.classList.add('active');
+        const chevron = fullReportSection.querySelector('.chevron');
+        if (chevron) chevron.style.transform = 'rotate(180deg)';
+
         const lockIcon = fullReportSection.querySelector('.lock-icon');
         if (lockIcon) lockIcon.style.display = 'none';
         const badge = fullReportSection.querySelector('.premium-badge');
         if (badge) badge.textContent = '✓ DÉBLOQUÉ';
+
+        // Scroll automatique vers le rapport après un court délai
+        setTimeout(() => {
+            fullReportSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 300);
 
         // === Construit le rapport complet à partir du véhicule courant ===
         const plate = (plateInput?.value || '').trim().toUpperCase();
