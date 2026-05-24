@@ -754,6 +754,7 @@
             console.log('Plate:', plateUpper, '| API:', !!apiVehicle, '| BaseDB:', !!baseDatabase[plateUpper], '| VehicleDB:', !!vehicleDB[plateUpper], '| isDemo:', isDemo);
 
             setTimeout(() => {
+                window._currentVehicle = vehicle;
                 populateResults(vehicle);
                 saveToHistory(plateUpper, vehicle);
 
@@ -1188,8 +1189,97 @@
         const badge = fullReportSection.querySelector('.premium-badge');
         if (badge) badge.textContent = '✓ DÉBLOQUÉ';
 
-        // Charger le rapport CarVertical pour la plaque scannée
+        // === Construit le rapport complet à partir du véhicule courant ===
         const plate = (plateInput?.value || '').trim().toUpperCase();
+        const v = window._currentVehicle || {};
+        const fullContent = document.getElementById('fullReportContent');
+        if (fullContent && v.marque) {
+            const recs = [];
+            const warns = [];
+            if (v.score >= 80) recs.push('✅ Véhicule en excellent état général — Achat recommandé');
+            else if (v.score >= 65) recs.push('✅ Bon achat — Négociez 5 à 10% sur le prix demandé');
+            else if (v.score >= 50) recs.push('⚠ Achat correct — Négociez fortement et vérifiez l\'historique');
+            else recs.push('❌ Risqué — Privilégiez un autre véhicule');
+
+            if (v.energie && v.energie.toUpperCase().includes('DIESEL')) {
+                warns.push('Vérifiez le FAP (filtre à particules) et l\'EGR — Pannes fréquentes après 100 000 km');
+                warns.push('Diesel : restrictions ZFE à venir dans plusieurs villes');
+            }
+            if (v.energie && v.energie.toUpperCase().includes('ESSENCE')) {
+                warns.push('Vérifiez la chaîne de distribution (ou courroie selon modèle)');
+            }
+            if (parseInt(v.cv) >= 10) {
+                warns.push('Forte puissance fiscale — Assurance et carte grise élevées');
+            }
+
+            const ageStr = v.age || '';
+            const ageNum = parseInt(ageStr) || 0;
+            if (ageNum >= 8) warns.push('Véhicule âgé — Demandez les factures d\'entretien des 2 dernières années');
+            if (ageNum >= 5) warns.push('Vérifiez : amortisseurs, embrayage, batterie (si > 5 ans)');
+
+            const checks = [
+                'Demander 2 dernières factures d\'entretien',
+                'Vérifier le dernier contrôle technique (< 6 mois recommandé)',
+                'Essayer le véhicule sur route + autoroute (15 min minimum)',
+                'Vérifier l\'absence de fuites (sol propre sous la voiture)',
+                'Contrôler les pneus (usure régulière, témoin pas atteint)',
+                'Tester tous les équipements : clim, vitres, radio, capteurs',
+                'Inspecter la carrosserie (impacts, retouches peinture, jeux)',
+                'Vérifier le carnet d\'entretien tamponné'
+            ];
+
+            fullContent.innerHTML = `
+                <div class="report-block" style="background:linear-gradient(135deg,#0f2027 0%,#203a43 100%);border-radius:12px;padding:18px;margin:12px 0;color:#fff;">
+                    <h4 style="margin:0 0 12px 0;font-size:16px;">📊 Analyse complète — ${v.marque} ${v.modele}</h4>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <div><div style="opacity:0.7;font-size:11px;text-transform:uppercase;">Score global</div><div style="font-size:22px;font-weight:800;color:${v.score >= 80 ? '#00e68a' : v.score >= 65 ? '#FFD700' : '#ff8a4c'};">${v.score}/100</div></div>
+                        <div><div style="opacity:0.7;font-size:11px;text-transform:uppercase;">Verdict</div><div style="font-size:14px;font-weight:600;">${v.scoreLabel || '—'}</div></div>
+                        <div><div style="opacity:0.7;font-size:11px;text-transform:uppercase;">Valeur Argus</div><div style="font-size:18px;font-weight:700;color:#00C2FF;">${v.argus || '—'}</div></div>
+                        <div><div style="opacity:0.7;font-size:11px;text-transform:uppercase;">Fourchette marché</div><div style="font-size:13px;">${v.prixRange || '—'}</div></div>
+                    </div>
+                </div>
+
+                <div class="report-block" style="background:#1a2332;border-radius:12px;padding:16px;margin:12px 0;color:#fff;">
+                    <h4 style="margin:0 0 10px 0;font-size:15px;">💡 Recommandations</h4>
+                    ${recs.map(r => `<p style="margin:6px 0;font-size:13px;line-height:1.5;">${r}</p>`).join('')}
+                </div>
+
+                ${warns.length ? `
+                <div class="report-block" style="background:rgba(255,138,76,0.1);border:1px solid rgba(255,138,76,0.3);border-radius:12px;padding:16px;margin:12px 0;color:#fff;">
+                    <h4 style="margin:0 0 10px 0;font-size:15px;color:#ff8a4c;">⚠️ Points de vigilance</h4>
+                    ${warns.map(w => `<p style="margin:6px 0;font-size:13px;line-height:1.5;">• ${w}</p>`).join('')}
+                </div>` : ''}
+
+                <div class="report-block" style="background:#1a2332;border-radius:12px;padding:16px;margin:12px 0;color:#fff;">
+                    <h4 style="margin:0 0 10px 0;font-size:15px;">✅ Checklist avant achat</h4>
+                    ${checks.map(c => `<p style="margin:6px 0;font-size:13px;line-height:1.5;">☐ ${c}</p>`).join('')}
+                </div>
+
+                <div class="report-block" style="background:#1a2332;border-radius:12px;padding:16px;margin:12px 0;color:#fff;">
+                    <h4 style="margin:0 0 10px 0;font-size:15px;">💰 Coût total annuel estimé</h4>
+                    <div style="font-size:24px;font-weight:800;color:#FFD700;margin-bottom:8px;">${v.coutTotal || '—'}</div>
+                    <div style="font-size:12px;opacity:0.8;line-height:1.6;">
+                        Assurance ${v.assurance || '—'}<br/>
+                        Carburant ${v.carburant || '—'}<br/>
+                        Entretien ${v.entretien || '—'}<br/>
+                        Pneus ${v.pneus || '—'}
+                    </div>
+                </div>
+
+                <div class="report-block" style="background:#1a2332;border-radius:12px;padding:16px;margin:12px 0;color:#fff;">
+                    <h4 style="margin:0 0 10px 0;font-size:15px;">📈 Tendance & demande marché</h4>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px;">
+                        <div><span style="opacity:0.7;">Tendance prix : </span><strong>${v.tendance || '—'}</strong></div>
+                        <div><span style="opacity:0.7;">Décote : </span><strong>${v.decote || '—'}</strong></div>
+                        <div><span style="opacity:0.7;">Demande : </span><strong>${v.demande || '—'}</strong></div>
+                        <div><span style="opacity:0.7;">Temps de vente : </span><strong>${v.tempsVente || '—'}</strong></div>
+                        <div style="grid-column:1/-1;"><span style="opacity:0.7;">Annonces en ligne : </span><strong>${v.annonces || '—'}</strong></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Charger le rapport CarVertical pour la plaque scannée (si dispo)
         const cvContainer = document.getElementById('cvReportContainer');
         if (plate && cvContainer && window.carvertical) {
             window.carvertical.load(plate, cvContainer);
