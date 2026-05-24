@@ -26,7 +26,8 @@
     const navItems = document.querySelectorAll('.nav-item');
     const allViews = [scanView, loadingView, resultView, historyView, alertsView, profileView];
 
-    // Vehicle database (demo data for multiple vehicle types)
+    // Vehicle database — fusion de la base enrichie + données démo
+    const baseDatabase = window.vehicleDatabase || {};
     const vehicleDB = {
         'AB-123-CD': {
             type: 'car',
@@ -629,7 +630,8 @@
         const plateUpper = plate.toUpperCase();
 
         fetchVehicleFromAPI(plateUpper).then(apiVehicle => {
-            const vehicle = apiVehicle || vehicleDB[plateUpper] || defaultVehicle;
+            // Essaie API → base enrichie → base démo → défaut
+            const vehicle = apiVehicle || baseDatabase[plateUpper] || vehicleDB[plateUpper] || defaultVehicle;
             const isDemo = !apiVehicle && !vehicleDB[plateUpper];
 
             setTimeout(() => {

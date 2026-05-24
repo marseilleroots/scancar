@@ -19,7 +19,8 @@ export default {
         }
 
         try {
-            const apiUrl = `https://${RAPIDAPI_HOST}/get-vehicule-info?token=TokenDemoRapidapi&host_name=${encodeURIComponent('https://apiplaqueimmatriculation.com')}&immatriculation=${encodeURIComponent(plate)}`;
+            // Utilise la clé RapidAPI réelle (pas de token démo)
+            const apiUrl = `https://${RAPIDAPI_HOST}/get-vehicule-info?immatriculation=${encodeURIComponent(plate)}`;
             const resp = await fetch(apiUrl, {
                 method: 'GET',
                 headers: {

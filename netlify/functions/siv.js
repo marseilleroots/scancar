@@ -24,7 +24,8 @@ exports.handler = async (event) => {
     }
 
     try {
-        const url = `https://${RAPIDAPI_HOST}/get-vehicule-info?token=TokenDemoRapidapi&host_name=${encodeURIComponent('https://apiplaqueimmatriculation.com')}&immatriculation=${encodeURIComponent(plate)}`;
+        // Utilise la clé RapidAPI réelle (pas de token démo)
+        const url = `https://${RAPIDAPI_HOST}/get-vehicule-info?immatriculation=${encodeURIComponent(plate)}`;
         const resp = await fetch(url, {
             method: 'GET',
             headers: {
