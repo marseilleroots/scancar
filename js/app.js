@@ -632,7 +632,10 @@
         fetchVehicleFromAPI(plateUpper).then(apiVehicle => {
             // Essaie API → base enrichie → base démo → défaut
             const vehicle = apiVehicle || baseDatabase[plateUpper] || vehicleDB[plateUpper] || defaultVehicle;
-            const isDemo = !apiVehicle && !vehicleDB[plateUpper];
+            const isDemo = !apiVehicle && !baseDatabase[plateUpper] && !vehicleDB[plateUpper];
+
+            // Debug log pour vérifier les sources
+            console.log('Plate:', plateUpper, '| API:', !!apiVehicle, '| BaseDB:', !!baseDatabase[plateUpper], '| VehicleDB:', !!vehicleDB[plateUpper], '| isDemo:', isDemo);
 
             setTimeout(() => {
                 populateResults(vehicle);
