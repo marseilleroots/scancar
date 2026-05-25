@@ -190,11 +190,23 @@
             }
         },
 
-        // ========== AD-BASED FALLBACK ==========
-        showRewardedAd() {
-            // Fallback to 30-second ad if RevenueCat unavailable
-            console.log('[ScanCar] Using ad-based unlock (fallback)');
-            // Dispatche un événement écouté par app.js pour lancer la pub récompensée
+        // ========== AD-BASED UNLOCK (AppLovin MAX) ==========
+        async showRewardedAd() {
+            console.log('[ScanCar] Launching rewarded ad (AppLovin MAX)');
+
+            // Vérifier si AppLovin est prêt
+            if (window.appLovinRewards) {
+                try {
+                    await window.appLovinRewards.show();
+                    this.trackUnlock('rewarded_ad');
+                    return;
+                } catch (error) {
+                    console.error('[ScanCar] AppLovin ad failed:', error);
+                }
+            }
+
+            // Fallback: événement pour app.js
+            console.log('[ScanCar] Fallback: dispatching custom event');
             document.dispatchEvent(new CustomEvent('scancar:show-rewarded-ad'));
         },
 

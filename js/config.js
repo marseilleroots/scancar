@@ -4,6 +4,15 @@ window.SCANCAR_CONFIG = {
     // Google Analytics 4 — Measurement ID (format: G-XXXXXXXXXX)
     GA4_ID: 'G-JT6M4QWPZ5',
 
+    // AppLovin MAX SDK — Set via Vercel environment variable
+    // Create account at https://www.applovin.com/
+    // Format: e.g., "4dc31de6fa6e2c5d"
+    APPLOVIN_SDK_KEY: '',
+
+    // AppLovin Rewarded Ad Unit ID
+    // Create in AppLovin dashboard
+    APPLOVIN_REWARDED_AD_UNIT: '',
+
     // RevenueCat API Key — Set via Vercel environment variable
     // Create account at https://app.revenuecat.com
     // Leave empty to use ad-based unlock fallback
