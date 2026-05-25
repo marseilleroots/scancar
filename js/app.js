@@ -521,7 +521,7 @@
     // Clé déplacée côté serveur — proxy Netlify Function
     const SIV_ENDPOINT = '/api/siv';
 
-    function convertApiResponse(d) {
+    async function convertApiResponse(d) {
         const data = d.data || d;
         const marque = data.marque || '—';
         const modele = data.modele || '—';
@@ -777,7 +777,7 @@
             const json = await resp.json();
             if (json.error) return null;
             if (json.code_erreur !== 200 || !json.data || json.data.erreur) return null;
-            return convertApiResponse(json);
+            return await convertApiResponse(json);
         } catch (e) {
             console.log('API error:', e);
             return null;
