@@ -70,6 +70,15 @@
             awinMid: 123894,
             awinAffid: 2899875,
             blockStyle: true
+        },
+        vevor: {
+            name: 'Vevor',
+            icon: '🔧',
+            baseUrl: 'https://www.vevor.com/',
+            title: 'Outils et équipements professionnels',
+            description: 'Équipements et outils de qualité à prix compétitifs',
+            awinMid: 28835,
+            awinAffid: 2899875
         }
     };
 
@@ -252,6 +261,7 @@
                 ${createAffiliateCard('vipcars', vehicleData)}
                 ${createAffiliateCard('delticom', vehicleData)}
                 ${createAffiliateCard('pneusmoto', vehicleData)}
+                ${createAffiliateCard('vevor', vehicleData)}
             </div>
         `;
 
