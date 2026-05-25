@@ -1,52 +1,5 @@
 {
-  "buildCommand": "echo 'Static site — no build needed'",
+  "buildCommand": "echo 'Static site'",
   "outputDirectory": ".",
-  "public": true,
-  "rewrites": [
-    {
-      "source": "/((?!api|.*\\.(?:js|css|json|xml|txt|html|map|svg|png|jpg|jpeg|gif|ico|woff|woff2|eot|ttf|webp)).*)",
-      "destination": "/index.html"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "Service-Worker-Allowed",
-          "value": "/"
-        },
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=3600"
-        }
-      ]
-    },
-    {
-      "source": "/sw.js",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, must-revalidate"
-        }
-      ]
-    },
-    {
-      "source": "/manifest.json",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "application/manifest+json"
-        }
-      ]
-    }
-  ]
+  "public": true
 }
