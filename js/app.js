@@ -1351,25 +1351,31 @@
                 <!-- Pub AdSense in-rapport -->
                 <ins class="adsbygoogle" style="display:block;margin:14px 0;" data-ad-client="ca-pub-4539749437157193" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
 
-                <div class="report-block" style="background:linear-gradient(135deg,#1a5e1a 0%,#2d8f2d 100%);border-radius:12px;padding:16px;margin:12px 0;color:#fff;">
-                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-                        <span style="background:#fff;color:#000;font-weight:800;font-size:10px;padding:3px 7px;border-radius:4px;">PARTENAIRE</span>
-                        <strong style="font-size:13px;">Younited Credit</strong>
+                <!-- Ottocast (Awin) - Accessoires CarPlay/Android Auto -->
+                <a href="https://www.awin1.com/cread.php?awinmid=96499&awinaffid=2899875&ued=https%3A%2F%2Fwww.ottocast.com%2F" target="_blank" rel="noopener sponsored" style="display:block;text-decoration:none;">
+                    <div class="report-block" style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);border:1px solid rgba(0,194,255,0.3);border-radius:12px;padding:16px;margin:12px 0;color:#fff;">
+                        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                            <span style="background:#00C2FF;color:#000;font-weight:800;font-size:10px;padding:3px 7px;border-radius:4px;">PARTENAIRE</span>
+                            <strong style="font-size:13px;">Ottocast</strong>
+                        </div>
+                        <h4 style="margin:0 0 6px 0;font-size:15px;">📱 CarPlay & Android Auto sans fil pour ${v.marque} ${v.modele}</h4>
+                        <p style="margin:0 0 12px 0;font-size:12px;opacity:0.85;">Transformez votre voiture en SUV connecté — Installation 5 min, compatible toutes marques</p>
+                        <span style="display:inline-block;background:#00C2FF;color:#000;padding:8px 16px;border-radius:8px;font-weight:700;font-size:13px;">Découvrir Ottocast →</span>
                     </div>
-                    <h4 style="margin:0 0 6px 0;font-size:15px;">💸 Financez ce véhicule à partir de 0,9%</h4>
-                    <p style="margin:0 0 12px 0;font-size:12px;opacity:0.9;">Crédit auto en ligne, réponse en 3 min — Pas de frais cachés</p>
-                    <a href="https://www.younited-credit.com/credit-auto" target="_blank" rel="noopener sponsored" style="display:inline-block;background:#fff;color:#1a5e1a;padding:8px 16px;border-radius:8px;font-weight:700;text-decoration:none;font-size:13px;">Simuler mon crédit →</a>
-                </div>
+                </a>
 
-                <div class="report-block" style="background:linear-gradient(135deg,#FF6B35 0%,#F7931E 100%);border-radius:12px;padding:16px;margin:12px 0;color:#fff;">
-                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-                        <span style="background:#fff;color:#000;font-weight:800;font-size:10px;padding:3px 7px;border-radius:4px;">PARTENAIRE</span>
-                        <strong style="font-size:13px;">Oscaro</strong>
+                <!-- Goodwheel (Awin) - Pneus en ligne France -->
+                <a href="https://www.awin1.com/cread.php?awinmid=123894&awinaffid=2899875&ued=https%3A%2F%2Fwww.goodwheel.fr%2F" target="_blank" rel="noopener sponsored" style="display:block;text-decoration:none;">
+                    <div class="report-block" style="background:linear-gradient(135deg,#0a3d62 0%,#0c5c8a 100%);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:16px;margin:12px 0;color:#fff;">
+                        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                            <span style="background:#FFD700;color:#000;font-weight:800;font-size:10px;padding:3px 7px;border-radius:4px;">PARTENAIRE</span>
+                            <strong style="font-size:13px;">Goodwheel</strong>
+                        </div>
+                        <h4 style="margin:0 0 6px 0;font-size:15px;">🛞 Pneus ${(v.pneus || '').split('(')[0].trim() || 'adaptés'} dès 39€</h4>
+                        <p style="margin:0 0 12px 0;font-size:12px;opacity:0.9;">Marques premium (Michelin, Continental, Pirelli, Bridgestone) — Livraison gratuite, montage chez un partenaire à 19€</p>
+                        <span style="display:inline-block;background:#FFD700;color:#000;padding:8px 16px;border-radius:8px;font-weight:700;font-size:13px;">Voir les pneus →</span>
                     </div>
-                    <h4 style="margin:0 0 6px 0;font-size:15px;">🔧 Pièces auto jusqu'à -50% pour ${v.marque} ${v.modele}</h4>
-                    <p style="margin:0 0 12px 0;font-size:12px;opacity:0.9;">+1 million de pièces neuves d'origine, livraison 24h</p>
-                    <a href="https://www.oscaro.com/?utm_source=scancar" target="_blank" rel="noopener sponsored" style="display:inline-block;background:#fff;color:#FF6B35;padding:8px 16px;border-radius:8px;font-weight:700;text-decoration:none;font-size:13px;">Voir les pièces →</a>
-                </div>
+                </a>
 
                 <div class="report-block" style="background:#1a2332;border-radius:12px;padding:16px;margin:12px 0;color:#fff;">
                     <h4 style="margin:0 0 10px 0;font-size:15px;">🛒 Voir les annonces pour ce modèle</h4>

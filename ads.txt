@@ -1,2 +1,3 @@
 google.com, pub-4539749437157193, DIRECT, f08c47fec0942fa0
 awin.com, 2899875, DIRECT
+# Awin merchants: Ottocast (96499), Goodwheel (123894)
