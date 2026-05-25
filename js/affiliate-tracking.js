@@ -28,6 +28,20 @@
             title: 'Pneus et accessoires auto',
             description: 'Achat de pneus en ligne'
         },
+        pneusmoto: {
+            name: 'Pneus-Moto',
+            icon: '🏍️',
+            baseUrl: 'https://www.awin1.com/cread.php?awinmid=7403&awinaffid=2899875&ued=https%3A%2F%2Fwww.pneus-moto.fr%2F',
+            title: 'Pneus pour motos',
+            description: 'Pneus de qualité pour motocyclettes'
+        },
+        vevor: {
+            name: 'Vevor',
+            icon: '🔧',
+            baseUrl: 'https://www.awin1.com/cread.php?awinmid=28835&awinaffid=2899875&ued=https%3A%2F%2Fwww.vevor.com%2F',
+            title: 'Outils et équipements',
+            description: 'Équipements professionnels à prix compétitifs'
+        },
         vipcars: {
             name: 'VIP Cars',
             icon: '🚕',
