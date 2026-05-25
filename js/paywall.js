@@ -1,6 +1,6 @@
-/* ScanCar — Unlock manager (Premium subscriptions + Ad-based fallback)
-   Integration: RevenueCat (SDK) + Stripe (payment processor)
-   Environment variables: REVENUECAT_API_KEY, STRIPE_PUBLIC_KEY (set in vercel.json) */
+/* ScanCar — Unlock manager (AD-ONLY MODE)
+   Le site est gratuit, monétisé via publicités + liens affiliés.
+   RevenueCat/Stripe sont laissés en place mais inactifs pour future activation. */
 
 (function() {
     'use strict';
@@ -17,9 +17,8 @@
                 || 'user_' + Math.random().toString(36).substr(2, 9);
             localStorage.setItem('scancar_userid', this.userId);
             this.initialized = true;
-
-            // Initialize RevenueCat if SDK is available
-            this.initRevenueCat();
+            // Mode 100% gratuit : pas d'init RevenueCat
+            console.log('[ScanCar] Mode gratuit — monétisation par pub + affiliation');
         },
 
         // ========== REVENUECAT SETUP ==========
