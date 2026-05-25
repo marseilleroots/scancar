@@ -190,24 +190,46 @@
             }
         },
 
-        // ========== AD-BASED UNLOCK (AppLovin MAX) ==========
+        // ========== AD-BASED UNLOCK (Simple Timer Fallback) ==========
         async showRewardedAd() {
-            console.log('[ScanCar] Launching rewarded ad (AppLovin MAX)');
+            console.log('[ScanCar] Showing unlock screen (30 second wait)');
 
-            // Vérifier si AppLovin est prêt
-            if (window.appLovinRewards) {
-                try {
-                    await window.appLovinRewards.show();
-                    this.trackUnlock('rewarded_ad');
-                    return;
-                } catch (error) {
-                    console.error('[ScanCar] AppLovin ad failed:', error);
+            // Créer une modal avec un compte à rebours
+            let modal = document.getElementById('scancar-rewarded-modal');
+            if (modal) modal.remove();
+
+            modal = document.createElement('div');
+            modal.id = 'scancar-rewarded-modal';
+            modal.className = 'scancar-modal-overlay';
+            modal.style.zIndex = '10000';
+
+            let countdown = 30;
+            modal.innerHTML = `
+                <div class="scancar-paywall" style="text-align: center;">
+                    <h2>Déblocage du rapport</h2>
+                    <p style="font-size: 18px; margin: 20px 0;">Veuillez patienter...</p>
+                    <div id="countdown" style="font-size: 48px; font-weight: bold; color: #4a86e8; margin: 20px 0;">30</div>
+                    <p style="font-size: 14px; color: #999;">Rapport débloqué automatiquement dans <span id="countdown-text">30 secondes</span></p>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+
+            const countdownEl = document.getElementById('countdown');
+            const countdownText = document.getElementById('countdown-text');
+
+            const interval = setInterval(() => {
+                countdown--;
+                countdownEl.textContent = countdown;
+                countdownText.textContent = countdown + ' secondes';
+
+                if (countdown <= 0) {
+                    clearInterval(interval);
+                    modal.remove();
+                    this.trackUnlock('timer_ad');
+                    window.unlockReport?.();
                 }
-            }
-
-            // Fallback: événement pour app.js
-            console.log('[ScanCar] Fallback: dispatching custom event');
-            document.dispatchEvent(new CustomEvent('scancar:show-rewarded-ad'));
+            }, 1000);
         },
 
         // ========== ANALYTICS ==========

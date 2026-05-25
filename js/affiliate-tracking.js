@@ -33,14 +33,18 @@
             icon: '🏍️',
             baseUrl: 'https://www.awin1.com/cread.php?awinmid=7403&awinaffid=2899875&ued=https%3A%2F%2Fwww.pneus-moto.fr%2F',
             title: 'Pneus pour motos',
-            description: 'Pneus de qualité pour motocyclettes'
+            description: 'Pneus de qualité pour motocyclettes',
+            awinMid: 7403,
+            awinAffid: 2899875
         },
         vevor: {
             name: 'Vevor',
             icon: '🔧',
             baseUrl: 'https://www.awin1.com/cread.php?awinmid=28835&awinaffid=2899875&ued=https%3A%2F%2Fwww.vevor.com%2F',
             title: 'Outils et équipements',
-            description: 'Équipements professionnels à prix compétitifs'
+            description: 'Équipements et outils de qualité à prix compétitifs',
+            awinMid: 28835,
+            awinAffid: 2899875
         },
         vipcars: {
             name: 'VIP Cars',
@@ -55,15 +59,6 @@
             baseUrl: 'https://www.assurland.com/',
             title: 'Devis d\'assurance auto',
             description: 'Comparateur d\'assurances auto'
-        },
-        pneusmoto: {
-            name: 'Pneus-Moto',
-            icon: '🏍️',
-            baseUrl: 'https://www.pneus-moto.fr/',
-            title: 'Pneus pour motos',
-            description: 'Pneus de qualité pour motocyclettes',
-            awinMid: 7403,
-            awinAffid: 2899875
         },
         ottocast: {
             name: 'Ottocast',
@@ -84,15 +79,6 @@
             awinMid: 123894,
             awinAffid: 2899875,
             blockStyle: true
-        },
-        vevor: {
-            name: 'Vevor',
-            icon: '🔧',
-            baseUrl: 'https://www.vevor.com/',
-            title: 'Outils et équipements professionnels',
-            description: 'Équipements et outils de qualité à prix compétitifs',
-            awinMid: 28835,
-            awinAffid: 2899875
         }
     };
 
