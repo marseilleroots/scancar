@@ -16,8 +16,8 @@
         // Initialiser AppLovin MAX
         async init() {
             if (this.initialized) return;
-            if (!this.sdkKey) {
-                console.warn('[AppLovin] SDK Key not configured');
+            if (!this.sdkKey || this.sdkKey === 'DISABLED') {
+                console.warn('[AppLovin] SDK Key not configured or disabled');
                 return;
             }
 
