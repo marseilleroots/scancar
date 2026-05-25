@@ -41,11 +41,59 @@
             baseUrl: 'https://www.assurland.com/',
             title: 'Devis d\'assurance auto',
             description: 'Comparateur d\'assurances auto'
+        },
+        pneusmoto: {
+            name: 'Pneus-Moto',
+            icon: '🏍️',
+            baseUrl: 'https://www.pneus-moto.fr/',
+            title: 'Pneus pour motos',
+            description: 'Pneus de qualité pour motocyclettes',
+            awinMid: 7403,
+            awinAffid: 2899875
+        },
+        ottocast: {
+            name: 'Ottocast',
+            icon: '📱',
+            baseUrl: 'https://www.ottocast.com/',
+            title: 'CarPlay & Android Auto sans fil',
+            description: 'Transformez votre voiture en SUV connecté',
+            awinMid: 96499,
+            awinAffid: 2899875,
+            blockStyle: true
+        },
+        goodwheel: {
+            name: 'Goodwheel',
+            icon: '🛞',
+            baseUrl: 'https://www.goodwheel.fr/',
+            title: 'Pneus en ligne',
+            description: 'Marques premium (Michelin, Continental, Pirelli, Bridgestone)',
+            awinMid: 123894,
+            awinAffid: 2899875,
+            blockStyle: true
         }
     };
 
+    // Generate Awin Affiliate URL
+    function generateAwinLink(program, vehicleData = {}) {
+        const programData = affiliatePrograms[program];
+        if (!programData || !programData.awinMid) return null;
+
+        const params = new URLSearchParams({
+            awinmid: programData.awinMid,
+            awinaffid: programData.awinAffid,
+            ued: programData.baseUrl
+        });
+
+        return `https://www.awin1.com/cread.php?${params.toString()}`;
+    }
+
     // Generate Affiliate URL with tracking
     function generateAffiliateLink(program, vehicleData = {}) {
+        // Check if it's an Awin partner
+        if (affiliatePrograms[program]?.awinMid) {
+            return generateAwinLink(program, vehicleData);
+        }
+
         const trackingId = `scancar_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         const params = new URLSearchParams({
             utm_source: 'scancar-app',
@@ -111,6 +159,50 @@
         });
     }
 
+    // Create Awin Block (for in-report display)
+    function createAwinBlock(program, vehicleData = {}) {
+        const programData = affiliatePrograms[program];
+        if (!programData || !programData.blockStyle) return '';
+
+        const awinLink = generateAwinLink(program, vehicleData);
+        if (!awinLink) return '';
+
+        let blockColor, btnColor, btnTextColor;
+
+        if (program === 'ottocast') {
+            blockColor = 'linear-gradient(135deg,#1a1a2e 0%,#16213e 100%)';
+            btnColor = '#00C2FF';
+            btnTextColor = '#000';
+        } else if (program === 'goodwheel') {
+            blockColor = 'linear-gradient(135deg,#0a3d62 0%,#0c5c8a 100%)';
+            btnColor = '#FFD700';
+            btnTextColor = '#000';
+        }
+
+        let title = programData.title;
+        if (program === 'goodwheel' && vehicleData.pneus) {
+            title = `🛞 Pneus ${(vehicleData.pneus || '').split('(')[0].trim() || 'adaptés'} dès 39€`;
+        } else if (program === 'ottocast' && vehicleData.marque && vehicleData.modele) {
+            title = `📱 CarPlay & Android Auto sans fil pour ${vehicleData.marque} ${vehicleData.modele}`;
+        }
+
+        return `
+            <a href="${awinLink}" target="_blank" rel="noopener sponsored" style="display:block;text-decoration:none;">
+                <div class="report-block" style="background:${blockColor};border:1px solid rgba(${program === 'ottocast' ? '0,194,255,0.3' : '255,255,255,0.15'});border-radius:12px;padding:16px;margin:12px 0;color:#fff;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                        <span style="background:${btnColor};color:${btnTextColor};font-weight:800;font-size:10px;padding:3px 7px;border-radius:4px;">PARTENAIRE</span>
+                        <strong style="font-size:13px;">${programData.name}</strong>
+                    </div>
+                    <h4 style="margin:0 0 6px 0;font-size:15px;">${title}</h4>
+                    <p style="margin:0 0 12px 0;font-size:12px;opacity:${program === 'ottocast' ? '0.85' : '0.9'};">${programData.description}${program === 'goodwheel' ? ' — Livraison gratuite, montage chez un partenaire à 19€' : ' — Installation 5 min, compatible toutes marques'}</p>
+                    <span style="display:inline-block;background:${btnColor};color:${btnTextColor};padding:8px 16px;border-radius:8px;font-weight:700;font-size:13px;">
+                        ${program === 'ottocast' ? 'Découvrir Ottocast →' : 'Voir les pneus →'}
+                    </span>
+                </div>
+            </a>
+        `;
+    }
+
     // Create Affiliate Card HTML
     function createAffiliateCard(program, vehicleData) {
         const programData = affiliatePrograms[program];
@@ -159,6 +251,7 @@
                 ${createAffiliateCard('assurland', vehicleData)}
                 ${createAffiliateCard('vipcars', vehicleData)}
                 ${createAffiliateCard('delticom', vehicleData)}
+                ${createAffiliateCard('pneusmoto', vehicleData)}
             </div>
         `;
 
@@ -177,6 +270,7 @@
     // Expose functions globally
     window.affiliateTracking = {
         createCard: createAffiliateCard,
+        createAwinBlock: createAwinBlock,
         trackClick: trackAffiliateClick,
         trackPremium: trackPremiumSignup,
         trackAdImpression: trackAdImpression,

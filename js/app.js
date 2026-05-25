@@ -594,21 +594,45 @@
             prixNeufBase *= 1.2;
         }
 
-        // Décote progressive selon l'âge (réaliste FR : 22% an 1, puis 15% les suivantes)
-        let valeurActu;
-        if (ageYears <= 0) {
-            valeurActu = prixNeufBase;
-        } else if (ageYears <= 1) {
-            valeurActu = prixNeufBase * 0.78;          // -22% la 1ère année
-        } else {
-            valeurActu = prixNeufBase * 0.78 * Math.pow(0.85, ageYears - 1);
-        }
-        // Plancher minimum selon type
-        const minPrix = type === 'moto' ? 600 : type === 'van' ? 1500 : 1000;
-        valeurActu = Math.max(minPrix, Math.round(valeurActu / 100) * 100);
+        // === ÉVALUATION PRIX RÉELLE (Argus/LBC via Netlify) ===
+        let valeurActu = null;
+        let argusLow = null;
+        let argusHigh = null;
 
-        const argusLow = Math.round(valeurActu * 0.88 / 100) * 100;
-        const argusHigh = Math.round(valeurActu * 1.12 / 100) * 100;
+        try {
+            const evalResponse = await fetch('/.netlify/functions/evaluateVehicle', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    marque, modele, annee, type, energie: energieNGC, cv: puisCv
+                })
+            });
+
+            if (evalResponse.ok) {
+                const evalData = await evalResponse.json();
+                valeurActu = evalData.argus;
+                argusLow = evalData.argusLow;
+                argusHigh = evalData.argusHigh;
+            }
+        } catch (err) {
+            console.warn('Évaluation serveur échouée:', err);
+        }
+
+        // Fallback: calcul théorique si l'API échoue
+        if (!valeurActu) {
+            let valAuto;
+            if (ageYears <= 0) {
+                valAuto = prixNeufBase;
+            } else if (ageYears <= 1) {
+                valAuto = prixNeufBase * 0.78;
+            } else {
+                valAuto = prixNeufBase * 0.78 * Math.pow(0.85, ageYears - 1);
+            }
+            const minPrix = type === 'moto' ? 600 : type === 'van' ? 1500 : 1000;
+            valeurActu = Math.max(minPrix, Math.round(valAuto / 100) * 100);
+            argusLow = Math.round(valeurActu * 0.88 / 100) * 100;
+            argusHigh = Math.round(valeurActu * 1.12 / 100) * 100;
+        }
         const fmtPrix = (n) => n.toLocaleString('fr-FR') + '€';
         const decoteAn = ageYears <= 1 ? 0.22 : 0.15;
 
@@ -1351,31 +1375,9 @@
                 <!-- Pub AdSense in-rapport -->
                 <ins class="adsbygoogle" style="display:block;margin:14px 0;" data-ad-client="ca-pub-4539749437157193" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
 
-                <!-- Ottocast (Awin) - Accessoires CarPlay/Android Auto -->
-                <a href="https://www.awin1.com/cread.php?awinmid=96499&awinaffid=2899875&ued=https%3A%2F%2Fwww.ottocast.com%2F" target="_blank" rel="noopener sponsored" style="display:block;text-decoration:none;">
-                    <div class="report-block" style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);border:1px solid rgba(0,194,255,0.3);border-radius:12px;padding:16px;margin:12px 0;color:#fff;">
-                        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-                            <span style="background:#00C2FF;color:#000;font-weight:800;font-size:10px;padding:3px 7px;border-radius:4px;">PARTENAIRE</span>
-                            <strong style="font-size:13px;">Ottocast</strong>
-                        </div>
-                        <h4 style="margin:0 0 6px 0;font-size:15px;">📱 CarPlay & Android Auto sans fil pour ${v.marque} ${v.modele}</h4>
-                        <p style="margin:0 0 12px 0;font-size:12px;opacity:0.85;">Transformez votre voiture en SUV connecté — Installation 5 min, compatible toutes marques</p>
-                        <span style="display:inline-block;background:#00C2FF;color:#000;padding:8px 16px;border-radius:8px;font-weight:700;font-size:13px;">Découvrir Ottocast →</span>
-                    </div>
-                </a>
-
-                <!-- Goodwheel (Awin) - Pneus en ligne France -->
-                <a href="https://www.awin1.com/cread.php?awinmid=123894&awinaffid=2899875&ued=https%3A%2F%2Fwww.goodwheel.fr%2F" target="_blank" rel="noopener sponsored" style="display:block;text-decoration:none;">
-                    <div class="report-block" style="background:linear-gradient(135deg,#0a3d62 0%,#0c5c8a 100%);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:16px;margin:12px 0;color:#fff;">
-                        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-                            <span style="background:#FFD700;color:#000;font-weight:800;font-size:10px;padding:3px 7px;border-radius:4px;">PARTENAIRE</span>
-                            <strong style="font-size:13px;">Goodwheel</strong>
-                        </div>
-                        <h4 style="margin:0 0 6px 0;font-size:15px;">🛞 Pneus ${(v.pneus || '').split('(')[0].trim() || 'adaptés'} dès 39€</h4>
-                        <p style="margin:0 0 12px 0;font-size:12px;opacity:0.9;">Marques premium (Michelin, Continental, Pirelli, Bridgestone) — Livraison gratuite, montage chez un partenaire à 19€</p>
-                        <span style="display:inline-block;background:#FFD700;color:#000;padding:8px 16px;border-radius:8px;font-weight:700;font-size:13px;">Voir les pneus →</span>
-                    </div>
-                </a>
+                <!-- Awin Partners (Ottocast & Goodwheel) -->
+                ${window.affiliateTracking?.createAwinBlock('ottocast', v) || ''}
+                ${window.affiliateTracking?.createAwinBlock('goodwheel', v) || ''}
 
                 <div class="report-block" style="background:#1a2332;border-radius:12px;padding:16px;margin:12px 0;color:#fff;">
                     <h4 style="margin:0 0 10px 0;font-size:15px;">🛒 Voir les annonces pour ce modèle</h4>
